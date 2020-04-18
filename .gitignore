@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gradle/
+/.idea/*
+!/.idea/codeStyles
+!/.idea/watcherTasks.xml
+!/.idea/runConfigurations/
+!/.idea/scopes/Code.xml
+build/
+out/
