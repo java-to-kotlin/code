@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    id 'org.jetbrains.kotlin.jvm' version "$KOTLIN_VERSION"
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_11
@@ -16,6 +16,8 @@ repositories {
 
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
     implementation "com.fasterxml.jackson.core:jackson-databind:2.10.0"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.0"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.0"
@@ -26,6 +28,16 @@ dependencies {
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.4.2"
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    kotlinOptions {
+        jvmTarget = "11"
+        javaParameters = true
+        freeCompilerArgs = ["-Xjvm-default=all"]
+    }
+}
+
+
+println("building with Kotlin $KOTLIN_VERSION")
 
 test {
     useJUnitPlatform {
