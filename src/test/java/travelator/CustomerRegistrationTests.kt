@@ -1,59 +1,57 @@
-package travelator;
+package travelator
 
-import org.junit.jupiter.api.Test;
-import travelator.handlers.RegistrationData;
+import com.natpryce.failureOrNull
+import com.natpryce.valueOrNull
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import travelator.handlers.RegistrationData
+import java.util.*
 
-import java.util.Optional;
-import java.util.Set;
+class CustomerRegistrationTests {
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-public class CustomerRegistrationTests {
-
-    InMemoryCustomers customers = new InMemoryCustomers();
-    Set<String> excluded = Set.of(
-        "cruella@hellhall.co.uk"
-    );
-    CustomerRegistration registration = new CustomerRegistration(customers,
-        (registrationData) -> excluded.contains(registrationData.email)
-    );
+    private val customers = InMemoryCustomers()
+    private val excluded = setOf("cruella@hellhall.co.uk")
+    private val registration = CustomerRegistration(
+        customers,
+        ExclusionList { excluded.contains(it.email) }
+    )
 
     @Test
-    public void adds_a_customer_when_not_excluded()
-        throws DuplicateException, ExcludedException {
-        assertEquals(Optional.empty(), customers.find("0"));
-
-        Customer added = registration.register(
-            new RegistrationData("fred flintstone", "fred@bedrock.com")
-        );
+    fun `adds a customer when not excluded`() {
+        assertEquals(Optional.empty<Any>(), customers.find("0"))
+        val added = registration.registerToo(
+            RegistrationData("fred flintstone", "fred@bedrock.com")
+        ).valueOrNull()
         assertEquals(
-            new Customer("0", "fred flintstone", "fred@bedrock.com"),
+            Customer("0", "fred flintstone", "fred@bedrock.com"),
             added
-        );
-        assertEquals(added, customers.find("0").orElseThrow());
+        )
+        assertEquals(added, customers.find("0").orElseThrow())
     }
 
     @Test
-    public void throws_DuplicateException_when_email_address_exists() {
-        customers.add(new Customer("0", "fred flintstone", "fred@bedrock.com"));
-        assertEquals(1, customers.size());
-
-        assertThrows(DuplicateException.class,
-            () -> registration.register(
-                new RegistrationData("another name", "fred@bedrock.com")
-            )
-        );
-        assertEquals(1, customers.size());
+    fun `returns Duplicate when email address exists`() {
+        customers.add(Customer("0", "fred flintstone", "fred@bedrock.com"))
+        assertEquals(1, customers.size())
+        val failure = registration.registerToo(
+            RegistrationData("another name", "fred@bedrock.com")
+        ).failureOrNull()
+        assertEquals(
+            Duplicate("customer with email fred@bedrock.com already exists"),
+            failure
+        )
+        assertEquals(1, customers.size())
     }
 
     @Test
-    public void throws_ExcludedException_when_excluded() {
-        assertThrows(ExcludedException.class,
-            () -> registration.register(
-                new RegistrationData("cruella de vil", "cruella@hellhall.co.uk")
-            )
-        );
-        assertEquals(0, customers.size());
+    fun `returns Excluded when excluded`() {
+        val failure = registration.registerToo(
+            RegistrationData("cruella de vil", "cruella@hellhall.co.uk")
+        ).failureOrNull()
+        assertEquals(
+            Excluded,
+            failure
+        )
+        assertEquals(0, customers.size())
     }
 }
