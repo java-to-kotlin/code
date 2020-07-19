@@ -2,9 +2,9 @@ package travelator.handlers
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import travelator.DuplicateException
-import travelator.ExcludedException
-import travelator.IRegisterCustomers
+import dev.forkhandles.result4k.Failure
+import dev.forkhandles.result4k.Success
+import travelator.*
 import travelator.http.Request
 import travelator.http.Response
 import java.net.HttpURLConnection.*
@@ -20,11 +20,15 @@ class CustomerRegistrationHandler(
                 request.body,
                 RegistrationData::class.java
             )
-            val customer = registration.register(data)
-            Response(
-                HTTP_CREATED,
-                objectMapper.writeValueAsString(customer)
-            )
+            val customerResult = registration.registerToo(data)
+            when (customerResult) {
+                is Success -> Response(
+                    HTTP_CREATED,
+                    objectMapper.writeValueAsString(customerResult.value)
+                )
+                is Failure -> customerResult.reason.toResponse()
+
+            }
         } catch (x: JsonProcessingException) {
             Response(HTTP_BAD_REQUEST)
         } catch (x: ExcludedException) {
@@ -35,4 +39,9 @@ class CustomerRegistrationHandler(
             Response(HTTP_INTERNAL_ERROR)
         }
     }
+}
+
+private fun RegistrationProblem.toResponse() = when (this) {
+    is Duplicate -> Response(HTTP_CONFLICT)
+    is Excluded -> Response(HTTP_FORBIDDEN)
 }
