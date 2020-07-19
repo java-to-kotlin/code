@@ -96,6 +96,7 @@ public class CustomerRegistrationHandlerTests {
         );
     }
 
+
     private String toJson(String jsonIsh) {
         return jsonIsh.replace('\'', '"');
     }
