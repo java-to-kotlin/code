@@ -1,5 +1,6 @@
 package travelator
 
+import dev.forkhandles.result4k.Result
 import travelator.handlers.RegistrationData
 
 class CustomerRegistration(
@@ -12,8 +13,9 @@ class CustomerRegistration(
         return if (exclusionList.exclude(data)) {
             throw ExcludedException()
         } else {
-            val result = customers.add(data.name, data.email)
-            result
+            val result: Result<Customer, DuplicateException> =
+                customers.addToo(data.name, data.email)
+            result // <1>
         }
     }
 }
