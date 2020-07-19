@@ -1,43 +1,38 @@
-package travelator.handlers;
+package travelator.handlers
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import travelator.Customer;
-import travelator.DuplicateException;
-import travelator.ExcludedException;
-import travelator.IRegisterCustomers;
-import travelator.http.Request;
-import travelator.http.Response;
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.ObjectMapper
+import travelator.DuplicateException
+import travelator.ExcludedException
+import travelator.IRegisterCustomers
+import travelator.http.Request
+import travelator.http.Response
+import java.net.HttpURLConnection.*
 
-import static java.net.HttpURLConnection.*;
+class CustomerRegistrationHandler(
+    private val registration: IRegisterCustomers
+) {
+    private val objectMapper = ObjectMapper()
 
-public class CustomerRegistrationHandler {
-
-    private final IRegisterCustomers registration;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public CustomerRegistrationHandler(IRegisterCustomers registration) {
-        this.registration = registration;
-    }
-
-    public Response handle(Request request) {
-        try {
-            RegistrationData data = objectMapper.readValue(
-                request.getBody(),
-                RegistrationData.class
-            );
-            Customer customer = registration.register(data);
-            return new Response(HTTP_CREATED,
+    fun handle(request: Request): Response {
+        return try {
+            val data = objectMapper.readValue(
+                request.body,
+                RegistrationData::class.java
+            )
+            val customer = registration.register(data)
+            Response(
+                HTTP_CREATED,
                 objectMapper.writeValueAsString(customer)
-            );
-        } catch (JsonProcessingException x) {
-            return new Response(HTTP_BAD_REQUEST);
-        } catch (ExcludedException x) {
-            return new Response(HTTP_FORBIDDEN);
-        } catch (DuplicateException x) {
-            return new Response(HTTP_CONFLICT);
-        } catch (Exception x) {
-            return new Response(HTTP_INTERNAL_ERROR);
+            )
+        } catch (x: JsonProcessingException) {
+            Response(HTTP_BAD_REQUEST)
+        } catch (x: ExcludedException) {
+            Response(HTTP_FORBIDDEN)
+        } catch (x: DuplicateException) {
+            Response(HTTP_CONFLICT)
+        } catch (x: Exception) {
+            Response(HTTP_INTERNAL_ERROR)
         }
     }
 }
