@@ -4,7 +4,6 @@ import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Result
 import dev.forkhandles.result4k.orThrow
 import dev.forkhandles.result4k.mapFailure
-import dev.forkhandles.result4k.recover
 import travelator.handlers.RegistrationData
 
 class CustomerRegistration(
@@ -12,16 +11,7 @@ class CustomerRegistration(
     private val exclusionList: ExclusionList
 ) : IRegisterCustomers {
 
-    @Throws(ExcludedException::class, DuplicateException::class)
-    override fun register(data: RegistrationData): Customer =
-        registerToo(data).recover { error ->  // <1>
-            when (error) {
-                is Excluded -> throw ExcludedException()
-                is Duplicate -> throw DuplicateException(error.message)
-        }
-    }
-
-    override fun registerToo(
+    override fun register(
         data: RegistrationData
     ): Result<Customer, RegistrationProblem> {
         return when {

@@ -19,7 +19,7 @@ class CustomerRegistrationTests {
     @Test
     fun `adds a customer when not excluded`() {
         assertEquals(Optional.empty<Any>(), customers.find("0"))
-        val added = registration.registerToo(
+        val added = registration.register(
             RegistrationData("fred flintstone", "fred@bedrock.com")
         ).valueOrNull()
         assertEquals(
@@ -33,7 +33,7 @@ class CustomerRegistrationTests {
     fun `returns Duplicate when email address exists`() {
         customers.add(Customer("0", "fred flintstone", "fred@bedrock.com"))
         assertEquals(1, customers.size())
-        val failure = registration.registerToo(
+        val failure = registration.register(
             RegistrationData("another name", "fred@bedrock.com")
         ).failureOrNull()
         assertEquals(
@@ -45,8 +45,8 @@ class CustomerRegistrationTests {
 
     @Test
     fun `returns Excluded when excluded`() {
-        val failure = registration.registerToo(
-            RegistrationData("cruella de vil", "cruella@hellhall.co.uk")
+        val failure = registration.register(
+                RegistrationData("cruella de vil", "cruella@hellhall.co.uk")
         ).failureOrNull()
         assertEquals(
             Excluded,

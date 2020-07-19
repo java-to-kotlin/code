@@ -23,7 +23,7 @@ class CustomerRegistrationHandler(
                 request.body,
                 RegistrationData::class.java
             )
-            registration.registerToo(data)
+            registration.register(data)
                 .map { value ->
                     Response(
                         HTTP_CREATED,

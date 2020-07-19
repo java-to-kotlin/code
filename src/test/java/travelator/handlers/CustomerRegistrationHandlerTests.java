@@ -31,7 +31,7 @@ public class CustomerRegistrationHandlerTests {
     @Test
     public void returns_Created_with_body_on_success() {
 
-        when(registration.registerToo(fredData))
+        when(registration.register(fredData))
             .thenReturn(new Success<>(
                 new Customer("0", fredData.name, fredData.email)
             ));
@@ -48,7 +48,7 @@ public class CustomerRegistrationHandlerTests {
     @Test
     public void returns_Conflict_for_duplicate() {
 
-        when(registration.registerToo(fredData))
+        when(registration.register(fredData))
             .thenReturn(new Failure<>(
                 new Duplicate("deliberate")
             ));
@@ -62,7 +62,7 @@ public class CustomerRegistrationHandlerTests {
     @Test
     public void returns_Forbidden_for_excluded() {
 
-        when(registration.registerToo(fredData))
+        when(registration.register(fredData))
             .thenReturn(new Failure<>(
                 Excluded.INSTANCE
             ));
@@ -84,7 +84,7 @@ public class CustomerRegistrationHandlerTests {
     @Test
     public void returns_InternalError_for_other_exceptions() {
 
-        when(registration.registerToo(fredData))
+        when(registration.register(fredData))
             .thenThrow(
                 new RuntimeException("deliberate")
             );
