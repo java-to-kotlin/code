@@ -13,21 +13,9 @@ public class InMemoryCustomers implements Customers {
     private final List<Customer> list = new ArrayList<>();
     private int id = 0;
 
-    @Override
-    public Customer add(String name, String email) throws DuplicateException {
-        if (list.stream().anyMatch( item -> item.getEmail().equals(email)))
-            throw new DuplicateException(
-                "customer with email " + email + " already exists"
-            );
-        int newId = id++;
-        Customer result = new Customer(Integer.toString(newId), name, email);
-        list.add(result);
-        return result;
-    }
-
     @SuppressWarnings("unchecked")
     @Override
-    public Result<Customer, DuplicateException> addToo(
+    public Result<Customer, DuplicateException> add(
         String name, String email
     ) {
         if (list.stream().anyMatch( item -> item.getEmail().equals(email)))

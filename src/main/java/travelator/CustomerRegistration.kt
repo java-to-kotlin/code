@@ -12,7 +12,7 @@ class CustomerRegistration(
     override fun register(data: RegistrationData): Customer {
         when {
             exclusionList.exclude(data) -> throw ExcludedException()
-            else -> return customers.addToo(data.name, data.email).orThrow()
+            else -> return customers.add(data.name, data.email).orThrow()
         }
     }
 }
