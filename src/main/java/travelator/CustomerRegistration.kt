@@ -10,10 +10,9 @@ class CustomerRegistration(
 
     @Throws(ExcludedException::class, DuplicateException::class)
     override fun register(data: RegistrationData): Customer {
-        return if (exclusionList.exclude(data)) {
-            throw ExcludedException()
-        } else {
-            customers.addToo(data.name, data.email).orThrow()
+        when {
+            exclusionList.exclude(data) -> throw ExcludedException()
+            else -> return customers.addToo(data.name, data.email).orThrow()
         }
     }
 }
