@@ -12,8 +12,8 @@ class CustomerRegistration(
         return if (exclusionList.exclude(data)) {
             throw ExcludedException()
         } else {
-            customers.add(data.name, data.email)
+            val result = customers.add(data.name, data.email)
+            result
         }
     }
-
 }
