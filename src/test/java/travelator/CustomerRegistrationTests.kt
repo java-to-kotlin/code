@@ -1,7 +1,7 @@
 package travelator
 
-import com.natpryce.failureOrNull
-import com.natpryce.valueOrNull
+import dev.forkhandles.result4k.failureOrNull
+import dev.forkhandles.result4k.valueOrNull
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import travelator.handlers.RegistrationData

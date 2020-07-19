@@ -2,7 +2,6 @@ package travelator
 
 import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Result
-import dev.forkhandles.result4k.orThrow
 import dev.forkhandles.result4k.mapFailure
 import travelator.handlers.RegistrationData
 
@@ -17,8 +16,8 @@ class CustomerRegistration(
         return when {
             exclusionList.exclude(data) -> Failure(Excluded)
             else -> customers.add(data.name, data.email)
-                .mapFailure { exception: DuplicateException ->
-                    Duplicate(exception.message)
+                .mapFailure { duplicate: DuplicateCustomerProblem ->
+                    Duplicate(duplicate.message)
                 }
         }
     }

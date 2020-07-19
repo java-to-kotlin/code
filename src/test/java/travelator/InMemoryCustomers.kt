@@ -1,8 +1,8 @@
-package travelator;
+package travelator
 
-import dev.forkhandles.result4k.Failure;
-import dev.forkhandles.result4k.Result;
-import dev.forkhandles.result4k.Success;
+import dev.forkhandles.result4k.Failure
+import dev.forkhandles.result4k.Result
+import dev.forkhandles.result4k.Success
 import travelator.util.toOptional
 import java.util.*
 
@@ -12,10 +12,10 @@ class InMemoryCustomers : Customers {
     private var id = 0
 
     override fun add(name: String, email: String)
-        : Result<Customer, DuplicateException> =
+        : Result<Customer, DuplicateCustomerProblem> =
         when {
             list.any { it.email == email } -> Failure(
-                DuplicateException(
+                DuplicateCustomerProblem(
                     "customer with email $email already exists"
                 )
             )
