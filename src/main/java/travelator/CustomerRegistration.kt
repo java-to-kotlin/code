@@ -1,8 +1,8 @@
 package travelator
 
-import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Result
-import dev.forkhandles.result4k.Success
+import dev.forkhandles.result4k.orThrow
+import dev.forkhandles.result4k.recover
 import travelator.handlers.RegistrationData
 
 class CustomerRegistration(
@@ -17,12 +17,7 @@ class CustomerRegistration(
         } else {
             val result: Result<Customer, DuplicateException> =
                 customers.addToo(data.name, data.email)
-            when (result) {
-                is Success<Customer> ->
-                    result.value
-                is Failure<DuplicateException> ->
-                    throw result.reason
-            }
+            result.orThrow()
         }
     }
 }
