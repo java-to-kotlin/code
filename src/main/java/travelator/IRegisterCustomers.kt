@@ -11,14 +11,7 @@ interface IRegisterCustomers {
     fun register(data: RegistrationData): Customer
 
     fun registerToo(data: RegistrationData):
-        Result<Customer, RegistrationProblem> =
-        try {
-            Success(register(data))
-        } catch (x: ExcludedException) {
-            Failure(Excluded)
-        } catch (x: DuplicateException) {
-            Failure(Duplicate(x.message))
-        }
+        Result<Customer, RegistrationProblem>
 }
 
 sealed class RegistrationProblem
