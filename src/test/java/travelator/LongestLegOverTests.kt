@@ -3,7 +3,6 @@ package travelator
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-import travelator.Legs.findLongestLegOver
 import travelator.Legs.longestLegOver
 import java.time.Duration
 import java.time.Instant
@@ -32,20 +31,20 @@ class LongestLegOverTests {
     }
 
     @Test
-    fun is_longest_leg_when_one_match() {
+    fun `is longest leg when one match`() {
         assertEquals(
             "one day",
-            findLongestLegOver(legs, oneDay.minusMillis(1))
-                .orElseThrow().description
+            longestLegOver(legs, oneDay.minusMillis(1))
+                !!.description
         )
     }
 
     @Test
-    fun is_longest_leg_when_more_than_one_match() {
+    fun `is longest leg when more than one match`() {
         assertEquals(
             "one day",
-            findLongestLegOver(legs, Duration.ofMinutes(59))
-                .orElseThrow().description
+            longestLegOver(legs, Duration.ofMinutes(59))
+                ?.description
         )
     }
 
