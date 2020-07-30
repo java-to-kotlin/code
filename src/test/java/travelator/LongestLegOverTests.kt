@@ -1,6 +1,6 @@
 package travelator
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import travelator.Legs.findLongestLegOver
 import java.time.Duration
@@ -8,11 +8,11 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.*
-import java.util.List
 import java.util.concurrent.ThreadLocalRandom
 
 class LongestLegOverTests {
-    private val legs = List.of(
+
+    private val legs = listOf(
         leg("one hour", Duration.ofHours(1)),
         leg("one day", Duration.ofDays(1)),
         leg("two hours", Duration.ofHours(2))
@@ -21,7 +21,7 @@ class LongestLegOverTests {
 
     @Test
     fun is_absent_when_no_legs() {
-        Assertions.assertEquals(
+        assertEquals(
             Optional.empty<Any>(),
             findLongestLegOver(emptyList(), Duration.ZERO)
         )
@@ -29,7 +29,7 @@ class LongestLegOverTests {
 
     @Test
     fun is_absent_when_no_legs_long_enough() {
-        Assertions.assertEquals(
+        assertEquals(
             Optional.empty<Any>(),
             findLongestLegOver(legs, oneDay)
         )
@@ -37,7 +37,7 @@ class LongestLegOverTests {
 
     @Test
     fun is_longest_leg_when_one_match() {
-        Assertions.assertEquals(
+        assertEquals(
             "one day",
             findLongestLegOver(legs, oneDay.minusMillis(1))
                 .orElseThrow().description
@@ -46,7 +46,7 @@ class LongestLegOverTests {
 
     @Test
     fun is_longest_leg_when_more_than_one_match() {
-        Assertions.assertEquals(
+        assertEquals(
             "one day",
             findLongestLegOver(legs, Duration.ofMinutes(59))
                 .orElseThrow().description
