@@ -6,8 +6,9 @@ fun longestLegOver(
     legs: List<Leg>,
     duration: Duration
 ): Leg? {
-    val longestLeg: Leg? = legs.maxByOrNull(Leg::plannedDuration)
-    return if (longestLeg != null && longestLeg.plannedDuration > duration)
+    val longestLeg = legs.maxByOrNull(Leg::plannedDuration) ?:
+        return null
+    return if (longestLeg.plannedDuration > duration)
         longestLeg
     else
         null
