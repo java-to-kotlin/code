@@ -40,7 +40,7 @@ private constructor(
         }
 
         @JvmStatic
-        fun of(amountStr: String?, currency: Currency): Money {
+        fun of(amountStr: String, currency: Currency): Money {
             return of(BigDecimal(amountStr), currency)
         }
 
