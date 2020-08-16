@@ -5,16 +5,18 @@ import travelator.ITrackTrips;
 import travelator.http.Request;
 import travelator.http.Response;
 
-import java.time.Instant;
+import java.time.Clock;
 
 import static java.net.HttpURLConnection.*;
 
 public class CurrentTripsHandler {
     private final ITrackTrips tracking;
+    private final Clock clock;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public CurrentTripsHandler(ITrackTrips tracking) {
+    public CurrentTripsHandler(ITrackTrips tracking, Clock clock) {
         this.tracking = tracking;
+        this.clock = clock;
     }
 
     public Response handle(Request request) {
@@ -25,7 +27,7 @@ public class CurrentTripsHandler {
                 return new Response(HTTP_BAD_REQUEST);
             var currentTrip = tracking.currentTripFor(
                 customerId.get(),
-                Instant.now() // <1>
+                clock.instant()
             );
             return currentTrip.isPresent() ?
                 new Response(HTTP_OK,
