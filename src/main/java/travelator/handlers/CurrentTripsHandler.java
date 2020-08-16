@@ -8,7 +8,6 @@ import travelator.http.Response;
 import static java.net.HttpURLConnection.*;
 
 public class CurrentTripsHandler {
-
     private final ITrackTrips tracking;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -22,7 +21,7 @@ public class CurrentTripsHandler {
                 .findFirst();
             if (customerId.isEmpty())
                 return new Response(HTTP_BAD_REQUEST);
-            var currentTrip = tracking.currentTripFor(customerId.get());
+            var currentTrip = tracking.currentTripFor(customerId.get(), null); // <1>
             return currentTrip.isPresent() ?
                 new Response(HTTP_OK,
                     objectMapper.writeValueAsString(currentTrip)) :

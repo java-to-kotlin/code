@@ -24,7 +24,7 @@ public class TrackingTests {
         clock.now = anInstant();
         assertEquals(
             Optional.empty(),
-            tracking.currentTripFor("aCustomer")
+            tracking.currentTripFor("cust1", null) // <1>
         );
     }
 
@@ -38,7 +38,7 @@ public class TrackingTests {
         clock.now = diwaliTrip.getPlannedStartTime().toInstant();
         assertEquals(
             Optional.of(diwaliTrip),
-            tracking.currentTripFor("cust1")
+            tracking.currentTripFor("cust1", null) // <1>
         );
     }
 
@@ -50,8 +50,9 @@ public class TrackingTests {
             "2020-11-13", "2020-11-15", BOOKED);
 
         clock.now = diwaliTrip.getPlannedStartTime().toInstant();
-        assertEquals(Optional.of(diwaliTrip),
-            tracking.currentTripFor("cust1")
+        assertEquals(
+            Optional.of(diwaliTrip),
+            tracking.currentTripFor("cust1", null)
         );
     }
 
@@ -63,8 +64,9 @@ public class TrackingTests {
             "2020-11-13", "2020-11-15", NOT_BOOKED);
 
         clock.now = diwaliTrip.getPlannedStartTime().toInstant();
-        assertEquals(Optional.of(diwaliTrip),
-            tracking.currentTripFor("cust1")
+        assertEquals(
+            Optional.of(diwaliTrip),
+            tracking.currentTripFor("cust1", null)
         );
     }
 
@@ -77,7 +79,7 @@ public class TrackingTests {
 
         clock.now = diwaliTrip.getPlannedStartTime().toInstant();
         assertThrows(IllegalStateException.class,
-            () -> tracking.currentTripFor("cust1")
+            () -> tracking.currentTripFor("cust1", null)
         );
     }
 

@@ -1,5 +1,6 @@
 package travelator;
 
+import java.time.Instant;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
@@ -13,8 +14,8 @@ class Tracking implements ITrackTrips {
     }
 
     @Override
-    public Optional<Trip> currentTripFor(String customerId) {
-        var candidates = trips.currentTripsFor(customerId, null) // <1>
+    public Optional<Trip> currentTripFor(String customerId, Instant at) { // <1>
+        var candidates = trips.currentTripsFor(customerId, at) // <1>
             .stream()
             .filter((trip) -> trip.getBookingStatus() == BOOKED)
             .collect(toList());
