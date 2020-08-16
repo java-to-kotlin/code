@@ -6,7 +6,6 @@ import static java.util.stream.Collectors.toList;
 import static travelator.Trip.BookingStatus.BOOKED;
 
 class Tracking implements ITrackTrips {
-
     private final Trips trips;
 
     public Tracking(Trips trips) {
@@ -15,7 +14,8 @@ class Tracking implements ITrackTrips {
 
     @Override
     public Optional<Trip> currentTripFor(String customerId) {
-        var candidates = trips.currentTripsFor(customerId).stream()
+        var candidates = trips.currentTripsFor(customerId, null) // <1>
+            .stream()
             .filter((trip) -> trip.getBookingStatus() == BOOKED)
             .collect(toList());
         if (candidates.size() == 1)
