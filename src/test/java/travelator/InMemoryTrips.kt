@@ -1,35 +1,21 @@
-package travelator;
+package travelator
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.time.Instant
 
-import static java.util.Collections.emptySet;
-import static java.util.stream.Collectors.toSet;
+class InMemoryTrips : Trips {
+    private val trips: MutableMap<String, MutableSet<Trip>> = mutableMapOf()
 
-public class InMemoryTrips implements Trips {
-
-    private final Map<String, Set<Trip>> trips = new HashMap<>();
-
-    public void addTrip(Trip trip) {
-        var existingTrips = trips.getOrDefault(
-            trip.getCustomerId(),
-            new HashSet<>());
-        existingTrips.add(trip);
-        trips.put(trip.getCustomerId(), existingTrips);
+    fun addTrip(trip: Trip) {
+        val existingTrips = trips.getOrDefault(trip.customerId, mutableSetOf())
+        existingTrips.add(trip)
+        trips[trip.customerId] = existingTrips
     }
 
-    @Override
-    public Set<Trip> tripsFor(String customerId) {
-        return trips.getOrDefault(customerId, emptySet());
-    }
+    override fun tripsFor(customerId: String) =
+        trips.getOrDefault(customerId, emptySet<Trip>())
 
-    @Override
-    public Set<Trip> currentTripsFor(String customerId, Instant at) {
-        return tripsFor(customerId).stream()
-            .filter(trip -> trip.isPlannedToBeActiveAt(at))
-            .collect(toSet());
-    }
+    override fun currentTripsFor(customerId: String, at: Instant): Set<Trip> =
+        tripsFor(customerId)
+            .filter { it.isPlannedToBeActiveAt(at) }
+            .toSet()
 }

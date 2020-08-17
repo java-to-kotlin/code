@@ -1,40 +1,30 @@
-package travelator.handlers;
+package travelator.handlers
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import travelator.ITrackTrips;
-import travelator.http.Request;
-import travelator.http.Response;
+import com.fasterxml.jackson.databind.ObjectMapper
+import travelator.ITrackTrips
+import travelator.http.Request
+import travelator.http.Response
+import java.net.HttpURLConnection.*
+import java.time.Clock
 
-import java.time.Clock;
+class CurrentTripsHandler(
+    private val tracking: ITrackTrips,
+    private val clock: Clock
+) {
+    private val objectMapper = ObjectMapper()
 
-import static java.net.HttpURLConnection.*;
-
-public class CurrentTripsHandler {
-    private final ITrackTrips tracking;
-    private final Clock clock;
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    public CurrentTripsHandler(ITrackTrips tracking, Clock clock) {
-        this.tracking = tracking;
-        this.clock = clock;
-    }
-
-    public Response handle(Request request) {
-        try {
-            var customerId = request.getQueryParam("customerId").stream()
-                .findFirst();
-            if (customerId.isEmpty())
-                return new Response(HTTP_BAD_REQUEST);
-            var currentTrip = tracking.currentTripFor(
-                customerId.get(),
-                clock.instant()
-            );
-            return currentTrip.isPresent() ?
-                new Response(HTTP_OK,
-                    objectMapper.writeValueAsString(currentTrip)) :
-                new Response(HTTP_NOT_FOUND);
-        } catch (Exception x) {
-            return new Response(HTTP_INTERNAL_ERROR);
+    fun handle(request: Request): Response {
+        return try {
+            val customerId = request.getQueryParam("customerId").firstOrNull()
+                ?: return Response(HTTP_BAD_REQUEST)
+            tracking.currentTripFor(customerId, clock.instant())?.let { currentTrip ->
+                Response(
+                    HTTP_OK,
+                    objectMapper.writeValueAsString(currentTrip)
+                )
+            } ?: Response(HTTP_NOT_FOUND)
+        } catch (x: Exception) {
+            Response(HTTP_INTERNAL_ERROR)
         }
     }
 }

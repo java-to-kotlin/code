@@ -1,10 +1,7 @@
-package travelator;
+package travelator
 
-import java.time.Instant;
-import java.util.Optional;
+import java.time.Instant
 
-public interface ITrackTrips {
-
-    Optional<Trip> currentTripFor(String customerId, Instant at);
-
+interface ITrackTrips {
+    fun currentTripFor(customerId: String, at: Instant): Trip?
 }
