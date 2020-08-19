@@ -20,6 +20,10 @@ class Money private constructor(
         amount.toString() + " " + currency.currencyCode
 
     fun add(that: Money): Money {
+        return plus(that)
+    }
+
+    private fun plus(that: Money): Money {
         require(currency == that.currency) {
             "cannot add Money values of different currencies"
         }
