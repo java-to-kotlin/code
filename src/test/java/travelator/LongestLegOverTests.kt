@@ -1,8 +1,10 @@
 package travelator
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import travelator.Legs.findLongestLegOver
+import travelator.Legs.longestLegOver
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
@@ -20,19 +22,13 @@ class LongestLegOverTests {
     private val oneDay = Duration.ofDays(1)
 
     @Test
-    fun is_absent_when_no_legs() {
-        assertEquals(
-            Optional.empty<Any>(),
-            findLongestLegOver(emptyList(), Duration.ZERO)
-        )
+    fun `is absent when no legs`() {
+        assertNull(longestLegOver(emptyList(), Duration.ZERO))
     }
 
     @Test
-    fun is_absent_when_no_legs_long_enough() {
-        assertEquals(
-            Optional.empty<Any>(),
-            findLongestLegOver(legs, oneDay)
-        )
+    fun `is absent when no legs long enough`() {
+        assertNull(longestLegOver(legs, oneDay))
     }
 
     @Test
