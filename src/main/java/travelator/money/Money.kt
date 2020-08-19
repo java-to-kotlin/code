@@ -23,7 +23,7 @@ class Money private constructor(
         return plus(that)
     }
 
-    private fun plus(that: Money): Money {
+    operator fun plus(that: Money): Money {
         require(currency == that.currency) {
             "cannot add Money values of different currencies"
         }
