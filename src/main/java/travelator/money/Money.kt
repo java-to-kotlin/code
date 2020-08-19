@@ -20,7 +20,7 @@ class Money private constructor(
         amount.toString() + " " + currency.currencyCode
 
     fun add(that: Money): Money {
-        return this.plus(that)
+        return this + that
     }
 
     operator fun plus(that: Money): Money {
