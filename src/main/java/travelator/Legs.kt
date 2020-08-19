@@ -1,27 +1,25 @@
-package travelator;
+package travelator
 
-import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
+import java.time.Duration
+import java.util.*
 
-public class Legs {
-
-    public static Optional<Leg> findLongestLegOver(
-        List<Leg> legs,
-        Duration duration
-    ) {
-        Leg result = null;
-        for (Leg leg : legs) {
+object Legs {
+    @JvmStatic
+    fun findLongestLegOver(
+        legs: List<Leg>,
+        duration: Duration
+    ): Optional<Leg> {
+        var result: Leg? = null
+        for (leg in legs) {
             if (isLongerThan(leg, duration))
                 if (result == null ||
-                    isLongerThan(leg, result.getPlannedDuration())) {
-                    result = leg;
-                }
+                    isLongerThan(leg, result.plannedDuration))
+                    result = leg
         }
-        return Optional.ofNullable(result);
+        return Optional.ofNullable(result)
     }
 
-    private static boolean isLongerThan(Leg leg, Duration duration) {
-        return leg.getPlannedDuration().compareTo(duration) > 0;
+    private fun isLongerThan(leg: Leg, duration: Duration): Boolean {
+        return leg.plannedDuration.compareTo(duration) > 0
     }
 }
