@@ -19,9 +19,7 @@ class Money private constructor(
     override fun toString() =
         amount.toString() + " " + currency.currencyCode
 
-    fun add(that: Money): Money {
-        return this + that
-    }
+    fun add(that: Money) = this + that
 
     operator fun plus(that: Money): Money {
         require(currency == that.currency) {
