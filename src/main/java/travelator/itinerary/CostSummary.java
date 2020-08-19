@@ -17,7 +17,7 @@ public class CostSummary {
 
     public void addLine(CurrencyConversion line) {
         lines.add(line);
-        total = total.plus(line.getToMoney());
+        total = total.add(line.getToMoney());
     }
 
     public List<CurrencyConversion> getLines() {

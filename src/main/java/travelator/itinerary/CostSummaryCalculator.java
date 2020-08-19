@@ -24,7 +24,7 @@ public class CostSummaryCalculator {
     }
     
     public void addCost(Money cost) {
-        currencyTotals.merge(cost.getCurrency(), cost, Money::plus);
+        currencyTotals.merge(cost.getCurrency(), cost, Money::add);
     }
 
     public CostSummary summarise() {
