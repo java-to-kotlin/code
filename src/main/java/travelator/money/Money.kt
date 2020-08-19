@@ -19,14 +19,12 @@ class Money private constructor(
     override fun toString() =
         amount.toString() + " " + currency.currencyCode
 
-
-    operator fun plus(that: Money): Money {
+    fun plus(that: Money): Money {
         require(currency == that.currency) {
             "cannot add Money values of different currencies"
         }
         return Money(amount.add(that.amount), currency)
     }
-
 
     companion object {
         @JvmStatic

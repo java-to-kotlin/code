@@ -18,18 +18,18 @@ class MoneyTest {
     fun adding() {
         assertEquals(
             Money.of(275, EUR),
-            Money.of(200, EUR) + Money.of(75, EUR)
+            Money.of(200, EUR).plus(Money.of(75, EUR))
         )
         assertEquals(
             Money.of(266, GBP),
-            Money.of(266, GBP) + Money.zero(GBP)
+            Money.of(266, GBP).plus(Money.zero(GBP))
         )
     }
 
     @Test
     fun cannot_add_money_of_different_currencies() {
         assertThrows(IllegalArgumentException::class.java) {
-            Money.of(1, GBP) + Money.of(2, EUR)
+            Money.of(1, GBP).plus(Money.of(2, EUR))
         }
     }
 }
