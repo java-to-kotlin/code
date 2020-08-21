@@ -1,6 +1,5 @@
 package travelator;
 
-import java.time.Clock;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,12 +11,7 @@ import static java.util.stream.Collectors.toSet;
 
 public class InMemoryTrips implements Trips {
 
-    private final Clock clock;
     private final Map<String, Set<Trip>> trips = new HashMap<>();
-
-    public InMemoryTrips(Clock clock) {
-        this.clock = clock;
-    }
 
     public void addTrip(Trip trip) {
         var existingTrips = trips.getOrDefault(
