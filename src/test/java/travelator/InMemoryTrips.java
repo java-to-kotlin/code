@@ -2,7 +2,6 @@ package travelator;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,9 +34,8 @@ public class InMemoryTrips implements Trips {
 
     @Override
     public Set<Trip> currentTripsFor(String customerId, Instant at) {
-        var now = clock.instant();
         return tripsFor(customerId).stream()
-            .filter(trip -> trip.isPlannedToBeActiveAt(now))
+            .filter(trip -> trip.isPlannedToBeActiveAt(at))
             .collect(toSet());
     }
 }
