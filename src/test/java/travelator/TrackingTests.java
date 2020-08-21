@@ -21,10 +21,10 @@ public class TrackingTests {
 
     @Test
     public void returns_empty_when_no_trip_planned_to_happen_now() {
-        clock.now = anInstant();
+        var clockNow = anInstant();
         assertEquals(
             Optional.empty(),
-            tracking.currentTripFor("cust1", clock.now)
+            tracking.currentTripFor("cust1", clockNow)
         );
     }
 
@@ -35,10 +35,10 @@ public class TrackingTests {
         givenATrip("cust1", "Christmas",
             "2020-12-24", "2020-11-26", BOOKED);
 
-        clock.now = diwaliTrip.getPlannedStartTime().toInstant();
+        var clockNow = diwaliTrip.getPlannedStartTime().toInstant();
         assertEquals(
             Optional.of(diwaliTrip),
-            tracking.currentTripFor("cust1", clock.now)
+            tracking.currentTripFor("cust1", clockNow)
         );
     }
 
@@ -49,10 +49,10 @@ public class TrackingTests {
         givenATrip("aDifferentCustomer", "Diwali",
             "2020-11-13", "2020-11-15", BOOKED);
 
-        clock.now = diwaliTrip.getPlannedStartTime().toInstant();
+        var clockNow = diwaliTrip.getPlannedStartTime().toInstant();
         assertEquals(
             Optional.of(diwaliTrip),
-            tracking.currentTripFor("cust1", clock.now)
+            tracking.currentTripFor("cust1", clockNow)
         );
     }
 
@@ -63,10 +63,10 @@ public class TrackingTests {
         givenATrip("cust1", "Diwali",
             "2020-11-13", "2020-11-15", NOT_BOOKED);
 
-        clock.now = diwaliTrip.getPlannedStartTime().toInstant();
+        var clockNow = diwaliTrip.getPlannedStartTime().toInstant();
         assertEquals(
             Optional.of(diwaliTrip),
-            tracking.currentTripFor("cust1", clock.now)
+            tracking.currentTripFor("cust1", clockNow)
         );
     }
 
@@ -77,9 +77,9 @@ public class TrackingTests {
         givenATrip("cust1", "Diwali",
             "2020-11-13", "2020-11-15", BOOKED);
 
-        clock.now = diwaliTrip.getPlannedStartTime().toInstant();
+        var clockNow = diwaliTrip.getPlannedStartTime().toInstant();
         assertThrows(IllegalStateException.class,
-            () -> tracking.currentTripFor("cust1", clock.now)
+            () -> tracking.currentTripFor("cust1", clockNow)
         );
     }
 
