@@ -19,7 +19,6 @@ class Money private constructor(
     override fun toString() =
         amount.toString() + " " + currency.currencyCode
 
-    @JvmName("add")
     fun add(that: Money): Money {
         require(currency == that.currency) {
             "cannot add Money values of different currencies"
