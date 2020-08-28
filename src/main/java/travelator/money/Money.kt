@@ -25,7 +25,7 @@ class Money private constructor(
         require(currency == that.currency) {
             "cannot add Money values of different currencies"
         }
-        return Money(amount.add(that.amount), currency)
+        return Money(this.amount + that.amount, currency)
     }
 
     companion object {
