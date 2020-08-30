@@ -33,7 +33,7 @@ class Money private constructor(
         fun of(amount: BigDecimal, currency: Currency) =
             invoke(amount, currency)
 
-        private fun invoke(amount: BigDecimal, currency: Currency) =
+        operator fun invoke(amount: BigDecimal, currency: Currency) =
             Money(
                 amount.setScale(currency.defaultFractionDigits),
                 currency
