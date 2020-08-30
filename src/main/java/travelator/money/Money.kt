@@ -28,12 +28,12 @@ class Money private constructor(
         return Money(this.amount + that.amount, currency)
     }
 
-    companion object {
+    companion object : (BigDecimal,Currency) -> Money {
         @JvmStatic
         fun of(amount: BigDecimal, currency: Currency) =
             this(amount, currency)
 
-        operator fun invoke(amount: BigDecimal, currency: Currency) =
+        override operator fun invoke(amount: BigDecimal, currency: Currency) =
             Money(
                 amount.setScale(currency.defaultFractionDigits),
                 currency
