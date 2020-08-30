@@ -30,10 +30,14 @@ class Money private constructor(
 
     companion object {
         @JvmStatic
-        fun of(amount: BigDecimal, currency: Currency) = Money(
-            amount.setScale(currency.defaultFractionDigits),
-            currency
-        )
+        fun of(amount: BigDecimal, currency: Currency) =
+            invoke(amount, currency)
+
+        private fun invoke(amount: BigDecimal, currency: Currency) =
+            Money(
+                amount.setScale(currency.defaultFractionDigits),
+                currency
+            )
 
         @JvmStatic
         fun of(amountStr: String, currency: Currency) =
