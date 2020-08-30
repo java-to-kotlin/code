@@ -41,14 +41,20 @@ class Money private constructor(
 
         @JvmStatic
         fun of(amountStr: String, currency: Currency) =
-            of(BigDecimal(amountStr), currency)
+            this(amountStr, currency)
+
+        operator fun invoke(amountStr: String, currency: Currency) =
+            invoke(BigDecimal(amountStr), currency)
 
         @JvmStatic
         fun of(amount: Int, currency: Currency) =
-            of(BigDecimal(amount), currency)
+            this(amount, currency)
+
+        operator fun invoke(amount: Int, currency: Currency) =
+            invoke(BigDecimal(amount), currency)
 
         @JvmStatic
         fun zero(userCurrency: Currency) =
-            of(BigDecimal.ZERO, userCurrency)
+            invoke(BigDecimal.ZERO, userCurrency)
     }
 }
