@@ -8,13 +8,7 @@ class CostSummary(
     userCurrency: Currency,
     val lines: List<CurrencyConversion>
 ) {
-
-    var total: Money = Money.of(0, userCurrency)
-        private set
-
-    init {
-        lines.forEach {
-            total += it.toMoney
-        }
-    }
+    val total = lines
+        .map { it.toMoney }
+        .fold(Money.of(0, userCurrency), Money::add)
 }
