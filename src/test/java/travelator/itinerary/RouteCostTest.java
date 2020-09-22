@@ -7,6 +7,7 @@ import travelator.money.Money;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.List;
 import java.util.Map;
 
@@ -16,24 +17,29 @@ import static travelator.money.Currencies.*;
 
 
 public class RouteCostTest {
-    ExchangeRates fx = new ExchangeRatesViaBaseCurrency(
-        EUR,
-        Map.entry(GBP, new BigDecimal("0.8")),
-        Map.entry(USD, new BigDecimal("1.6")),
-        Map.entry(JOD, new BigDecimal("100"))
-    );
+    ExchangeRates fx = 
+        new ExchangeRatesViaBaseCurrency(
+            EUR,
+            Map.entry(GBP, new BigDecimal("0.8")),
+            Map.entry(USD, new BigDecimal("1.6")),
+            Map.entry(JOD, new BigDecimal("100"))
+        );
+    Currency userCurrency = 
+        GBP;
 
-    public CostSummary costs(Route r) {
-        CostSummaryCalculator calculator = new CostSummaryCalculator(GBP, fx);
-        r.addCostsTo(calculator);
-        return calculator.summarise();
+    CostSummaryCalculator calculator =
+        new CostSummaryCalculator(userCurrency, fx); // <1>
+
+    public CostSummary costSummary(Route r) {
+        r.addCostsTo(calculator); // <2>
+        return calculator.summarise(); // <3>
     }
 
     @Test
     public void an_empty_route_costs_nothing() throws IOException {
         var r = new Route(emptyList());
 
-        var costs = costs(r);
+        var costs = costSummary(r);
 
         assertEquals(Money.zero(GBP), costs.getTotal());
     }
@@ -44,7 +50,7 @@ public class RouteCostTest {
             journeyCosting(Money.of("80", GBP)),
             journeyCosting(Money.of("35", GBP))));
 
-        var costs = costs(r);
+        var costs = costSummary(r);
 
         assertEquals(Money.of("115", GBP), costs.getTotal());
     }
@@ -55,7 +61,7 @@ public class RouteCostTest {
             journeyCosting(Money.of("100", EUR)),
             journeyCosting(Money.of("50", EUR))));
 
-        var costs = costs(r);
+        var costs = costSummary(r);
 
         assertEquals(Money.of("120", GBP), costs.getTotal());
     }
@@ -66,7 +72,7 @@ public class RouteCostTest {
             journeyCosting(Money.of("100", EUR)),
             journeyCosting(Money.of("50", GBP))));
 
-        var costs = costs(r);
+        var costs = costSummary(r);
 
         assertEquals(Money.of("130", GBP), costs.getTotal());
     }
@@ -78,7 +84,7 @@ public class RouteCostTest {
             journeyCosting(Money.of("10000", JOD)),
             journeyCosting(Money.of("750", GBP))));
 
-        var costs = costs(r);
+        var costs = costSummary(r);
 
         assertEquals(Money.of("1030", GBP), costs.getTotal());
     }
