@@ -5,7 +5,5 @@ import travelator.money.Money
 
 class CostSummary(
     val lines: List<CurrencyConversion>,
-    total: Money
-) {
-    val total = total
-}
+    val total: Money
+)
