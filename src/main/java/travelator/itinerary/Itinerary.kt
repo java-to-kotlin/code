@@ -1,6 +1,7 @@
 package travelator.itinerary
 
 import travelator.Id
+import travelator.money.Money
 
 data class Itinerary(
     val id: Id<Itinerary>,
@@ -8,15 +9,7 @@ data class Itinerary(
     val accommodations: List<Accommodation> = emptyList()
 ) {
 
-    fun addCostsTo(calculator: CostSummaryCalculator) {
-        route.addCostsTo(calculator)
-        accommodations.addCostsTo(calculator)
-    }
-
+    fun costs(): List<Money> = route.costs() + accommodations.costs()
 }
 
-fun Iterable<Accommodation>.addCostsTo(calculator: CostSummaryCalculator) {
-    forEach { a ->
-        a.addCostsTo(calculator)
-    }
-}
+fun Iterable<Accommodation>.costs(): List<Money> = flatMap { it.costs() }
