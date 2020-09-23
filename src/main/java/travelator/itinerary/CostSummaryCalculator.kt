@@ -2,7 +2,7 @@ package travelator.itinerary
 
 import travelator.money.ExchangeRates
 import travelator.money.Money
-import java.util.*
+import java.util.Currency
 
 class CostSummaryCalculator(
     private val userCurrency: Currency,
