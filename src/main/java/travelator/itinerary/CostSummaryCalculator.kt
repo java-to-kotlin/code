@@ -9,6 +9,9 @@ class CostSummaryCalculator(
     private val userCurrency: Currency,
     private val exchangeRates: ExchangeRates
 ) {
+    fun toUserCurrency(it: Money) =
+        exchangeRates.convert(it, userCurrency)
+
     fun summarise(costs: Iterable<Money>): CostSummary {
         val currencyTotals: List<Money> = costs
             .groupBy { it.currency }
@@ -16,7 +19,7 @@ class CostSummaryCalculator(
             .map { moneys -> moneys.reduce(Money::add) }
         val lines: List<CurrencyConversion> = currencyTotals
             .sortedBy { it.currency.currencyCode }
-            .map { exchangeRates.convert(it, userCurrency) }
+            .map(::toUserCurrency)
         val total = lines
             .map { it.toMoney }
             .fold(Money(0, userCurrency), Money::add)
