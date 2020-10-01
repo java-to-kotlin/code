@@ -59,3 +59,8 @@ class Money private constructor(
             invoke(BigDecimal.ZERO, userCurrency)
     }
 }
+
+fun Iterable<Money>.sumOrNull() = reduceOrNull(Money::add)
+
+fun Iterable<Money>.sum(zeroCurrency: Currency): Money =
+    fold(Money.zero(zeroCurrency), Money::add)
