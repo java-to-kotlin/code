@@ -1,13 +1,13 @@
 package travelator.mobile
 
 class Application(
-    private val preferences: UserPreferences
+    private var preferences: UserPreferences // <1>
 ) {
     fun showWelcome() {
         WelcomeView(preferences).show()
     }
 
     fun editPreferences() {
-        PreferencesView(preferences).show()
+        preferences = PreferencesView(preferences).showModal()
     }
 }

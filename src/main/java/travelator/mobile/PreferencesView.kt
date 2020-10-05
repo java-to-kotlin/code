@@ -9,17 +9,17 @@ class PreferencesView(
     private val localePicker = LocalePicker()
     private val currencyPicker = CurrencyPicker()
 
-    override fun show() {
+    fun showModal(): UserPreferences {
         greetingPicker.greeting = preferences.greeting
         localePicker.locale = preferences.locale
         currencyPicker.currency = preferences.currency
-        super.show()
+        show()
+        return preferences
     }
 
     protected fun onGreetingChange() {
         preferences.greeting = greetingPicker.greeting
     }
-
 
     protected fun onLocaleChange() {
         preferences.locale = localePicker.locale
@@ -31,13 +31,13 @@ class PreferencesView(
 }
 
 internal class GreetingPicker {
-    var greeting: String = TODO()
+    var greeting: String = ""
 }
 
 internal class LocalePicker {
-    var locale: Locale = TODO()
+    var locale: Locale = Locale.UK
 }
 
 internal class CurrencyPicker {
-    var currency: Currency = TODO()
+    var currency: Currency = Currency.getInstance(Locale.UK)
 }
