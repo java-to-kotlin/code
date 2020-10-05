@@ -3,7 +3,7 @@ package travelator.mobile
 import java.util.*
 
 class PreferencesView(
-    private val preferences: UserPreferences
+    private var preferences: UserPreferences
 ) : View() {
     private val greetingPicker = GreetingPicker()
     private val localePicker = LocalePicker()
@@ -18,15 +18,28 @@ class PreferencesView(
     }
 
     protected fun onGreetingChange() {
-        preferences.greeting = greetingPicker.greeting
+        preferences = UserPreferences(
+            greetingPicker.greeting,
+            preferences.locale,
+            preferences.currency
+        )
     }
 
+
     protected fun onLocaleChange() {
-        preferences.locale = localePicker.locale
+        preferences = UserPreferences(
+            preferences.greeting,
+            localePicker.locale,
+            preferences.currency
+        )
     }
 
     protected fun onCurrencyChange() {
-        preferences.currency = currencyPicker.currency
+        preferences = UserPreferences(
+            preferences.greeting,
+            preferences.locale,
+            currencyPicker.currency
+        )
     }
 }
 
