@@ -35,11 +35,13 @@ public class Route {
             get(size() - 1).getArrivalTime());
     }
 
+    
     public void addCostsTo(CostSummaryCalculator calculator) {
         for (var j : journeys) {
             calculator.addCost(j.getPrice());
         }
     }
+
 
     public List<Interchange> requiredAccommodation() {
         var results = new ArrayList<Interchange>();
