@@ -10,15 +10,16 @@ import static travelator.Routes.getDepartsFrom;
 public class Suffering {
 
     public static int sufferScoreFor(List<Journey> route) {
+        Location start = getDepartsFrom(route);
         List<Journey> longestJourneys = longestJourneysIn(route, 3);
-        return sufferScore(longestJourneys, getDepartsFrom(route));
+        return sufferScore(longestJourneys, start);
     }
 
     public static List<Journey> longestJourneysIn(
         List<Journey> journeys,
         int limit
     ) {
-        journeys.sort(comparing(Journey::getDuration).reversed()); // <1>
+        journeys.sort(comparing(Journey::getDuration).reversed());
         var actualLimit = Math.min(journeys.size(), limit);
         return journeys.subList(0, actualLimit);
     }
