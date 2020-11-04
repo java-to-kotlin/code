@@ -10,9 +10,8 @@ import static travelator.Routes.getDepartsFrom;
 public class Suffering {
 
     public static int sufferScoreFor(List<Journey> route) {
-        Location start = getDepartsFrom(route);
         List<Journey> longestJourneys = longestJourneysIn(route, 3);
-        return sufferScore(longestJourneys, start);
+        return sufferScore(longestJourneys, getDepartsFrom(route));
     }
 
     public static List<Journey> longestJourneysIn(
