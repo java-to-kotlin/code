@@ -4,6 +4,7 @@ import java.util.List;
 
 import static java.util.Comparator.comparing;
 import static travelator.Other.SOME_COMPLICATED_RESULT;
+import static travelator.Collections.sorted;
 import static travelator.Other.routesFor;
 import static travelator.Routes.getDepartsFrom;
 
@@ -15,13 +16,15 @@ public class Suffering {
         return sufferScore(longestJourneys, start);
     }
 
-    public static List<Journey> longestJourneysIn(
+    static List<Journey> longestJourneysIn(
         List<Journey> journeys,
         int limit
     ) {
-        journeys.sort(comparing(Journey::getDuration).reversed());
         var actualLimit = Math.min(journeys.size(), limit);
-        return journeys.subList(0, actualLimit);
+        return sorted(
+            journeys,
+            comparing(Journey::getDuration).reversed()
+        ).subList(0, actualLimit);
     }
 
     public static List<List<Journey>> routesToShowFor(String itineraryId) {
