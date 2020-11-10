@@ -3,8 +3,8 @@ package travelator;
 import java.util.List;
 
 import static java.util.Comparator.comparing;
-import static travelator.Other.SOME_COMPLICATED_RESULT;
 import static travelator.Collections.sorted;
+import static travelator.Other.SOME_COMPLICATED_RESULT;
 import static travelator.Other.routesFor;
 import static travelator.Routes.getDepartsFrom;
 
@@ -29,12 +29,15 @@ public class Suffering {
 
     public static List<List<Journey>> routesToShowFor(String itineraryId) {
         var routes = routesFor(itineraryId);
-        removeUnbearableRoutes(routes);
+        routes = removeUnbearableRoutes(routes);
         return routes;
     }
 
-    private static void removeUnbearableRoutes(List<List<Journey>> routes) {
+    private static List<List<Journey>> removeUnbearableRoutes
+        (List<List<Journey>> routes
+    ) {
         routes.removeIf(route -> sufferScoreFor(route) > 10);
+        return routes;
     }
 
     private static int sufferScore(
