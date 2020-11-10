@@ -1,8 +1,6 @@
 package travelator
 
-import travelator.Collections.sorted
 import travelator.Other.SOME_COMPLICATED_RESULT
-import java.util.Comparator.comparing
 import java.util.stream.Collectors
 
 object Suffering {
@@ -15,16 +13,8 @@ object Suffering {
     }
 
     @JvmStatic
-    fun longestJourneysIn(
-        journeys: List<Journey>,
-        limit: Int
-    ): List<Journey> {
-        val actualLimit = Math.min(journeys.size, limit)
-        return sorted(
-            journeys,
-            comparing { obj: Journey -> obj.duration }.reversed()
-        ).subList(0, actualLimit)
-    }
+    fun longestJourneysIn(journeys: List<Journey>, limit: Int): List<Journey> =
+        journeys.sortedByDescending { it.duration }.take(limit)
 
     fun routesToShowFor(itineraryId: String?): List<List<Journey>> {
         return bearable(Other.routesFor(itineraryId))
