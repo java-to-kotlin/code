@@ -7,14 +7,14 @@ object Suffering {
     @JvmStatic
     fun sufferScoreFor(route: List<Journey>): Int {
         return sufferScore(
-            longestJourneysIn(route, 3),
+            route.longestJourneys(limit = 3), // <1>
             Routes.getDepartsFrom(route)
         )
     }
 
     @JvmStatic
-    fun longestJourneysIn(journeys: List<Journey>, limit: Int): List<Journey> =
-        journeys.sortedByDescending { it.duration }.take(limit)
+    fun List<Journey>.longestJourneys(limit: Int): List<Journey> =
+        sortedByDescending { it.duration }.take(limit)
 
     fun routesToShowFor(itineraryId: String?): List<List<Journey>> {
         return bearable(Other.routesFor(itineraryId))

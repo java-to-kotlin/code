@@ -7,42 +7,42 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static travelator.Suffering.longestJourneysIn;
+import static travelator.Suffering.longestJourneys;
 
 public class LongestJourneyInTests {
 
     @Test public void returns_empty_list_for_empty_list() {
         assertEquals(
             emptyList(),
-            longestJourneysIn(emptyList(), 2)
+            longestJourneys(emptyList(), 2)
         );
     }
 
     @Test public void returns_empty_list_for_0_limit() {
         assertEquals(
             emptyList(),
-            longestJourneysIn(List.of(shortJourney), 0)
+            longestJourneys(List.of(shortJourney), 0)
         );
     }
 
     @Test public void returns_journeys_sorted() {
         assertEquals(
             List.of(longJourney, mediumJourney, shortJourney),
-            longestJourneysIn(List.of(shortJourney, mediumJourney, longJourney), 3)
+            longestJourneys(List.of(shortJourney, mediumJourney, longJourney), 3)
         );
     }
 
     @Test public void returns_limit_results() {
         assertEquals(
             List.of(longJourney, mediumJourney),
-            longestJourneysIn(List.of(shortJourney, mediumJourney, longJourney), 2)
+            longestJourneys(List.of(shortJourney, mediumJourney, longJourney), 2)
         );
     }
 
     @Test public void returns_up_to_limit_results() {
         assertEquals(
             List.of(longJourney, mediumJourney, shortJourney),
-            longestJourneysIn(List.of(shortJourney, mediumJourney, longJourney), 4)
+            longestJourneys(List.of(shortJourney, mediumJourney, longJourney), 4)
         );
     }
 
