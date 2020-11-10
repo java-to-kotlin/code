@@ -29,9 +29,7 @@ public class Suffering {
     }
 
     public static List<List<Journey>> routesToShowFor(String itineraryId) {
-        var routes = routesFor(itineraryId);
-        routes = bearable(routes);
-        return routes;
+        return bearable(routesFor(itineraryId));
     }
 
     private static List<List<Journey>> bearable
