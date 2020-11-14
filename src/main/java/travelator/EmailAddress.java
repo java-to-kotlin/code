@@ -3,10 +3,11 @@ package travelator;
 import java.util.Objects;
 
 public class EmailAddress {
-    private final String localPart; // <1>
+    private final String localPart;
     private final String domain;
 
-    public static EmailAddress parse(String value) { // <2>
+
+    public static EmailAddress parse(String value) {
         var atIndex = value.lastIndexOf('@');
         if (atIndex < 1 || atIndex == value.length() - 1)
             throw new IllegalArgumentException(
@@ -18,21 +19,21 @@ public class EmailAddress {
         );
     }
 
-    public EmailAddress(String localPart, String domain) { // <3>
+    public EmailAddress(String localPart, String domain) {
         this.localPart = localPart;
         this.domain = domain;
     }
 
-    public String getLocalPart() { // <4>
+    public String getLocalPart() {
         return localPart;
     }
 
-    public String getDomain() { // <4>
+    public String getDomain() {
         return domain;
     }
 
     @Override
-    public boolean equals(Object o) { // <5>
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmailAddress that = (EmailAddress) o;
@@ -41,12 +42,12 @@ public class EmailAddress {
     }
 
     @Override
-    public int hashCode() { // <5>
+    public int hashCode() {
         return Objects.hash(localPart, domain);
     }
 
     @Override
-    public String toString() { // <6>
+    public String toString() {
         return localPart + "@" + domain;
     }
 }
