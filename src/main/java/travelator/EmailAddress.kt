@@ -1,24 +1,11 @@
 package travelator
 
-import java.util.*
-
-class EmailAddress(
+data class EmailAddress(
     val localPart: String,
     val domain: String
 ) {
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val that = o as EmailAddress
-        return localPart == that.localPart && domain == that.domain
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hash(localPart, domain)
-    }
-
-    override fun toString(): String {
+    override fun toString(): String { // <1>
         return "$localPart@$domain"
     }
 
