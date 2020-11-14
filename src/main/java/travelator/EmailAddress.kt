@@ -2,7 +2,11 @@ package travelator
 
 import java.util.*
 
-class EmailAddress(val localPart: String, val domain: String) {
+class EmailAddress(
+    val localPart: String,
+    val domain: String
+) {
+
     override fun equals(o: Any?): Boolean {
         if (this === o) return true
         if (o == null || javaClass != o.javaClass) return false
