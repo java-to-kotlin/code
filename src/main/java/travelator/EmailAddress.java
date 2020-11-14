@@ -6,7 +6,6 @@ public class EmailAddress {
     private final String localPart;
     private final String domain;
 
-
     public static EmailAddress parse(String value) {
         var atIndex = value.lastIndexOf('@');
         if (atIndex < 1 || atIndex == value.length() - 1)
