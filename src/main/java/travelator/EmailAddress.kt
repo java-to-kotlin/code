@@ -5,9 +5,7 @@ data class EmailAddress(
     val domain: String
 ) {
 
-    override fun toString(): String { // <1>
-        return "$localPart@$domain"
-    }
+    override fun toString() = "$localPart@$domain"
 
     companion object {
         @JvmStatic
