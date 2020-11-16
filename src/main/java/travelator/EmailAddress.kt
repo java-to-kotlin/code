@@ -14,8 +14,9 @@ data class EmailAddress(
         }
 
         private fun emailAddress(value: String, atIndex: Int): EmailAddress {
-            require(!(atIndex < 1 || atIndex == value.length - 1)) {
-                "EmailAddress must be two parts separated by @"
+            if (!!(atIndex < 1 || atIndex == value.length - 1)) {
+                val message = "EmailAddress must be two parts separated by @"
+                throw IllegalArgumentException(message.toString())
             }
             return EmailAddress(
                 value.substring(0, atIndex),
