@@ -11,7 +11,7 @@ data class EmailAddress(
         @JvmStatic
         fun parse(value: String): EmailAddress {
             val atIndex = value.lastIndexOf('@')
-            return atIndex.let {
+            return atIndex.let { atIndex -> // <1>
                 require(!(atIndex < 1 || atIndex == value.length - 1)) {
                     "EmailAddress must be two parts separated by @"
                 }
