@@ -9,13 +9,10 @@ data class EmailAddress(
 
     companion object {
         @JvmStatic
-        fun parse(value: String): EmailAddress {
-            val (leftPart, rightPart) = value.split('@')
-            return EmailAddress(
-                leftPart,
-                rightPart
-            )
-        }
+        fun parse(value: String): EmailAddress =
+            value.split('@').let { (leftPart, rightPart) ->
+                EmailAddress(leftPart, rightPart)
+            }
 
         private fun String.split(divider: Char): Pair<String, String> {
             val atIndex = lastIndexOf(divider)
