@@ -14,9 +14,11 @@ data class EmailAddress(
             require(!(atIndex < 1 || atIndex == value.length - 1)) {
                 "EmailAddress must be two parts separated by @"
             }
+            val leftPart = value.substring(0, atIndex)
+            val rightPart = value.substring(atIndex + 1)
             return EmailAddress(
-                value.substring(0, atIndex),
-                value.substring(atIndex + 1)
+                leftPart,
+                rightPart
             )
         }
     }
