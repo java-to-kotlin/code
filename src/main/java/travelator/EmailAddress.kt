@@ -18,11 +18,12 @@ data class EmailAddress(
                 throw IllegalArgumentException(
                     "EmailAddress must be two parts separated by @"
                 )
+            } else {
+                return EmailAddress(
+                    value.substring(0, atIndex),
+                    value.substring(atIndex + 1)
+                )
             }
-            return EmailAddress(
-                value.substring(0, atIndex),
-                value.substring(atIndex + 1)
-            )
         }
     }
 }
