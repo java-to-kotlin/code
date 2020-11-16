@@ -14,9 +14,10 @@ data class EmailAddress(
         }
 
         private fun emailAddress(value: String, atIndex: Int): EmailAddress {
-            if (!!(atIndex < 1 || atIndex == value.length - 1)) {
-                val message = "EmailAddress must be two parts separated by @"
-                throw IllegalArgumentException(message.toString())
+            if ((atIndex < 1 || atIndex == value.length - 1)) {
+                throw IllegalArgumentException(
+                    "EmailAddress must be two parts separated by @"
+                )
             }
             return EmailAddress(
                 value.substring(0, atIndex),
