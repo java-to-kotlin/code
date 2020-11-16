@@ -13,8 +13,8 @@ data class EmailAddress(
             return emailAddress(value, value.lastIndexOf('@'))
         }
 
-        private fun emailAddress(value: String, atIndex: Int): EmailAddress {
-            return if ((atIndex < 1 || atIndex == value.length - 1)) {
+        private fun emailAddress(value: String, atIndex: Int): EmailAddress =
+            if ((atIndex < 1 || atIndex == value.length - 1)) {
                 throw IllegalArgumentException(
                     "EmailAddress must be two parts separated by @"
                 )
@@ -24,6 +24,5 @@ data class EmailAddress(
                     value.substring(atIndex + 1)
                 )
             }
-        }
     }
 }
