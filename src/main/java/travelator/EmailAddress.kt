@@ -10,14 +10,13 @@ data class EmailAddress(
     companion object {
         @JvmStatic
         fun parse(value: String): EmailAddress {
-            require(!(
-                value.lastIndexOf('@') < 1 ||
-                    value.lastIndexOf('@') == value.length - 1)) {
+            val atIndex = value.lastIndexOf('@') // <2>
+            require(!(atIndex < 1 || atIndex == value.length - 1)) { // <3>
                 "EmailAddress must be two parts separated by @"
             }
-            return EmailAddress(
-                value.substring(0, value.lastIndexOf('@')),
-                value.substring(value.lastIndexOf('@') + 1)
+            return EmailAddress( // <1>
+                value.substring(0, atIndex),
+                value.substring(atIndex + 1)
             )
         }
     }
