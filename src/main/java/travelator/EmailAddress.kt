@@ -10,8 +10,7 @@ data class EmailAddress(
     companion object {
         @JvmStatic
         fun parse(value: String): EmailAddress {
-            val atIndex = value.lastIndexOf('@')
-            return emailAddress(value, atIndex)
+            return emailAddress(value, value.lastIndexOf('@'))
         }
 
         private fun emailAddress(value: String, atIndex: Int): EmailAddress {
