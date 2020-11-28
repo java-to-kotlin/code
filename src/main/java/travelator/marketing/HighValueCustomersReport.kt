@@ -29,16 +29,16 @@ private fun summaryFor(valuableCustomers: List<CustomerData>): String {
     return "\tTOTAL\t" + total.toMoneyString()
 }
 
-fun customerDataFrom(line: String): CustomerData {
-    val parts = line.split("\t")
-    return CustomerData(
-        id = parts[0],
-        givenName = parts[1],
-        familyName = parts[2],
-        score = parts[3].toInt(),
-        spend = if (parts.size == 4) 0.0 else parts[4].toDouble()
-    )
-}
+fun customerDataFrom(line: String): CustomerData =
+    line.split("\t").let { parts ->
+        CustomerData(
+            id = parts[0],
+            givenName = parts[1],
+            familyName = parts[2],
+            score = parts[3].toInt(),
+            spend = if (parts.size == 4) 0.0 else parts[4].toDouble()
+        )
+    }
 
 private fun lineFor(customer: CustomerData): String =
     "${customer.id}\t${customer.marketingName}\t${customer.spend.toMoneyString()}"
