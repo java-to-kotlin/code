@@ -3,11 +3,11 @@ package travelator.marketing;
 import java.util.Objects;
 
 public class CustomerData {
-    public final String id;
-    public final String givenName;
-    public final String familyName;
-    public final int score;
-    public final double spend;
+    private final String id;
+    private final String givenName;
+    private final String familyName;
+    private final int score;
+    private final double spend;
 
     public CustomerData(
         String id,
@@ -28,15 +28,36 @@ public class CustomerData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CustomerData that = (CustomerData) o;
-        return score == that.score &&
-            Double.compare(that.spend, spend) == 0 &&
-            id.equals(that.id) &&
-            givenName.equals(that.givenName) &&
-            familyName.equals(that.familyName);
+        return getScore() == that.getScore() &&
+            Double.compare(that.getSpend(), getSpend()) == 0 &&
+            getId().equals(that.getId()) &&
+            getGivenName().equals(that.getGivenName()) &&
+            getFamilyName().equals(that.getFamilyName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, givenName, familyName, score, spend);
+        return Objects.hash(getId(), getGivenName(),
+            getFamilyName(), getScore(), getSpend());
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getGivenName() {
+        return givenName;
+    }
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public double getSpend() {
+        return spend;
     }
 }

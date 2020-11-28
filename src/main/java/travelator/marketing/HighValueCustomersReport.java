@@ -15,8 +15,8 @@ public class HighValueCustomersReport {
         List<CustomerData> valuableCustomers = new BufferedReader(reader).lines()
             .skip(1) // header
             .map(line -> customerDataFrom(line))
-            .filter(customerData -> customerData.score >= 10)
-            .sorted(comparing(customerData -> customerData.score))
+            .filter(customerData -> customerData.getScore() >= 10)
+            .sorted(comparing(customerData -> customerData.getScore()))
             .collect(toList());
 
         writer.append("ID\tName\tSpend\n");
@@ -28,7 +28,7 @@ public class HighValueCustomersReport {
 
     private static String summaryFor(List<CustomerData> valuableCustomers) {
         var total = valuableCustomers.stream()
-            .mapToDouble(customerData -> customerData.spend)
+            .mapToDouble(customerData -> customerData.getSpend())
             .sum();
         return "\tTOTAL\t" + formatMoney(total);
     }
@@ -47,8 +47,8 @@ public class HighValueCustomersReport {
     }
 
     private static String lineFor(CustomerData customer) {
-        return customer.id + "\t" + marketingNameFor(customer) + "\t" +
-            formatMoney(customer.spend);
+        return customer.getId() + "\t" + marketingNameFor(customer) + "\t" +
+            formatMoney(customer.getSpend());
     }
 
     private static String formatMoney(double money) {
@@ -56,6 +56,6 @@ public class HighValueCustomersReport {
     }
 
     private static String marketingNameFor(CustomerData customer) {
-        return customer.familyName.toUpperCase() + ", " + customer.givenName;
+        return customer.getFamilyName().toUpperCase() + ", " + customer.getGivenName();
     }
 }
