@@ -45,7 +45,7 @@ class HighValueCustomersReportTests {
     public void emptySpendIs0() {
         assertEquals(
             new CustomerData("1", "Fred", "Flintstone", 0, 0D),
-            HighValueCustomersReport.customerDataFrom("1\tFred\tFlintstone\t0")
+            HighValueCustomersReportKt.customerDataFrom("1\tFred\tFlintstone\t0")
         );
     }
 
@@ -54,7 +54,7 @@ class HighValueCustomersReportTests {
         List<String> expectedLines
     ) throws IOException {
         var output = new StringWriter();
-        HighValueCustomersReport.generate(
+        HighValueCustomersReportKt.generate(
             new StringReader(String.join("\n", inputLines)),
             output
         );
