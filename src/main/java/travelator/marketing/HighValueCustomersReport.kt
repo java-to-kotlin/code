@@ -42,14 +42,15 @@ fun customerDataFrom(line: String): CustomerData {
 }
 
 private fun lineFor(customer: CustomerData): String {
-    return customer.id + "\t" + marketingNameFor(customer) + "\t" +
+    return customer.id + "\t" + customer.marketingNameFor() + "\t" +
         formatMoney(customer.spend)
 }
+
 
 private fun formatMoney(money: Double): String {
     return String.format("%#.2f", money)
 }
 
-private fun marketingNameFor(customer: CustomerData): String {
-    return customer.familyName.toUpperCase() + ", " + customer.givenName
+private fun CustomerData.marketingNameFor(): String {
+    return familyName.toUpperCase() + ", " + givenName
 }
