@@ -19,13 +19,13 @@ fun generate(reader: Reader?, writer: Writer) {
     for (customerData in valuableCustomers) {
         writer.append(lineFor(customerData)).append("\n")
     }
-    writer.append(summaryFor(valuableCustomers))
+    writer.append(valuableCustomers.summarised())
 }
 
-private fun summaryFor(valuableCustomers: List<CustomerData>): String {
-    val total = valuableCustomers.sumByDouble { it.spend }
-    return "\tTOTAL\t${total.toMoneyString()}"
-}
+private fun List<CustomerData>.summarised(): String =
+    sumByDouble { it.spend }.let { total ->
+        "\tTOTAL\t${total.toMoneyString()}"
+    }
 
 fun String.toCustomerData(): CustomerData =
     split("\t").let { parts ->
