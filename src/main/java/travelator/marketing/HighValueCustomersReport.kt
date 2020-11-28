@@ -23,10 +23,8 @@ fun generate(reader: Reader?, writer: Writer) {
 }
 
 private fun summaryFor(valuableCustomers: List<CustomerData>): String {
-    val total = valuableCustomers.stream()
-        .mapToDouble { (_, _, _, _, spend) -> spend }
-        .sum()
-    return "\tTOTAL\t" + total.toMoneyString()
+    val total = valuableCustomers.sumByDouble { it.spend }
+    return "\tTOTAL\t${total.toMoneyString()}"
 }
 
 fun String.toCustomerData(): CustomerData =
