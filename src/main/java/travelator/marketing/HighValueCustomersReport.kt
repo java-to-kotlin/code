@@ -26,7 +26,7 @@ private fun summaryFor(valuableCustomers: List<CustomerData>): String {
     val total = valuableCustomers.stream()
         .mapToDouble { (_, _, _, _, spend) -> spend }
         .sum()
-    return "\tTOTAL\t" + formatMoney(total)
+    return "\tTOTAL\t" + total.toMoneyString()
 }
 
 fun customerDataFrom(line: String): CustomerData {
@@ -42,11 +42,9 @@ fun customerDataFrom(line: String): CustomerData {
 }
 
 private fun lineFor(customer: CustomerData): String =
-    "${customer.id}\t${customer.marketingName}\t${formatMoney(customer.spend)}"
+    "${customer.id}\t${customer.marketingName}\t${customer.spend.toMoneyString()}"
 
-private fun formatMoney(money: Double): String {
-    return String.format("%#.2f", money)
-}
+private fun Double.toMoneyString() = String.format("%#.2f", this)
 
 private val CustomerData.marketingName: String
     get() = "${familyName.toUpperCase()}, $givenName"
