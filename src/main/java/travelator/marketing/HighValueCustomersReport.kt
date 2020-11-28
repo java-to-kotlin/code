@@ -11,7 +11,7 @@ import java.util.stream.Collectors
 fun generate(reader: Reader?, writer: Writer) {
     val valuableCustomers = BufferedReader(reader).lines()
         .skip(1) // header
-        .map { line: String -> customerDataFrom(line) }
+        .map { line: String -> line.toCustomerData() }
         .filter { (_, _, _, score) -> score >= 10 }
         .sorted(Comparator.comparing { (_, _, _, score) -> score })
         .collect(Collectors.toList())
@@ -29,8 +29,8 @@ private fun summaryFor(valuableCustomers: List<CustomerData>): String {
     return "\tTOTAL\t" + total.toMoneyString()
 }
 
-fun customerDataFrom(line: String): CustomerData =
-    line.split("\t").let { parts ->
+fun String.toCustomerData(): CustomerData =
+    split("\t").let { parts ->
         CustomerData(
             id = parts[0],
             givenName = parts[1],
