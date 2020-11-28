@@ -1,20 +1,16 @@
 package travelator.marketing
 
-import java.io.BufferedReader
 import java.io.IOException
 import java.io.Reader
 import java.io.Writer
-import java.util.*
-import java.util.stream.Collectors
 
 @Throws(IOException::class)
-fun generate(reader: Reader?, writer: Writer) {
-    val valuableCustomers = BufferedReader(reader).lines()
-        .skip(1) // header
-        .map { line: String -> line.toCustomerData() }
-        .filter { (_, _, _, score) -> score >= 10 }
-        .sorted(Comparator.comparing { (_, _, _, score) -> score })
-        .collect(Collectors.toList())
+fun generate(reader: Reader, writer: Writer) {
+    val valuableCustomers = reader.readLines()
+        .drop(1) // header
+        .map(String::toCustomerData)
+        .filter { it.score >= 10 }
+        .sortedBy(CustomerData::score)
     writer.append("ID\tName\tSpend\n")
     for (customerData in valuableCustomers) {
         writer.append(lineFor(customerData)).append("\n")
