@@ -11,9 +11,9 @@ fun generate(reader: Reader, writer: Writer) {
         .map(String::toCustomerData)
         .filter { it.score >= 10 }
         .sortedBy(CustomerData::score)
-    writer.append("ID\tName\tSpend\n")
+    writer.appendLine("ID\tName\tSpend")
     for (customerData in valuableCustomers) {
-        writer.append(lineFor(customerData)).append("\n")
+        writer.appendLine(lineFor(customerData))
     }
     writer.append(valuableCustomers.summarised())
 }
