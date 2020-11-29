@@ -6,17 +6,20 @@ import java.io.Writer
 
 @Throws(IOException::class)
 fun generate(reader: Reader, writer: Writer) {
-    val valuableCustomers = reader.readLines()
-        .withoutHeader()
-        .map(String::toCustomerData)
-        .filter { it.score >= 10 }
+    val valuableCustomers = reader
+        .readLines()
+        .toValuableCustomers()
         .sortedBy(CustomerData::score)
     writer.appendLine("ID\tName\tSpend")
     for (customerData in valuableCustomers) {
-        writer.appendLine(lineFor(customerData))
+        writer.appendLine(customerData.outputLine)
     }
     writer.append(valuableCustomers.summarised())
 }
+
+private fun List<String>.toValuableCustomers() = withoutHeader()
+    .map(String::toCustomerData)
+    .filter { it.score >= 10 }
 
 private fun List<String>.withoutHeader() = drop(1)
 
@@ -25,7 +28,7 @@ private fun List<CustomerData>.summarised(): String =
         "\tTOTAL\t${total.toMoneyString()}"
     }
 
-fun String.toCustomerData(): CustomerData =
+internal fun String.toCustomerData(): CustomerData =
     split("\t").let { parts ->
         CustomerData(
             id = parts[0],
@@ -36,8 +39,9 @@ fun String.toCustomerData(): CustomerData =
         )
     }
 
-private fun lineFor(customer: CustomerData): String =
-    "${customer.id}\t${customer.marketingName}\t${customer.spend.toMoneyString()}"
+
+private val CustomerData.outputLine: String
+    get() = "$id\t$marketingName\t${spend.toMoneyString()}"
 
 private fun Double.toMoneyString() = this.formattedAs("%#.2f")
 
