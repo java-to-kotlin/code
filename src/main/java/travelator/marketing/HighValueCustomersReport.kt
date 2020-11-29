@@ -6,8 +6,7 @@ import java.io.Writer
 
 @Throws(IOException::class)
 fun generate(reader: Reader, writer: Writer) {
-    val valuableCustomers = reader.readLines()
-        .drop(1) // header
+    val valuableCustomers = withoutHeader(reader.readLines())
         .map(String::toCustomerData)
         .filter { it.score >= 10 }
         .sortedBy(CustomerData::score)
@@ -17,6 +16,8 @@ fun generate(reader: Reader, writer: Writer) {
     }
     writer.append(valuableCustomers.summarised())
 }
+
+private fun withoutHeader(list: List<String>) = list.drop(1)
 
 private fun List<CustomerData>.summarised(): String =
     sumByDouble { it.spend }.let { total ->
