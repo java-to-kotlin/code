@@ -39,7 +39,6 @@ internal fun String.toCustomerData(): CustomerData =
         )
     }
 
-
 private val CustomerData.outputLine: String
     get() = "$id\t$marketingName\t${spend.toMoneyString()}"
 
