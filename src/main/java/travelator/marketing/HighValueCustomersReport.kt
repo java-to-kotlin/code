@@ -5,13 +5,18 @@ import java.io.Writer
 
 @Throws(IOException::class)
 fun generate(writer: Writer, lines: List<String>) {
+    val resultLines = generate(lines)
+    writer.append(resultLines.joinToString("\n"))
+}
+
+fun generate(lines: List<String>): List<String> {
     val valuableCustomers = lines
         .toValuableCustomers()
         .sortedBy(CustomerData::score)
     val resultLines = listOf("ID\tName\tSpend") +
         valuableCustomers.map(CustomerData::outputLine) +
         valuableCustomers.summarised()
-    writer.append(resultLines.joinToString("\n"))
+    return resultLines
 }
 
 private fun List<String>.toValuableCustomers() = withoutHeader()
