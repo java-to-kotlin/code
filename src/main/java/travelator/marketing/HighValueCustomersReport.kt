@@ -1,13 +1,5 @@
 package travelator.marketing
 
-import java.io.IOException
-import java.io.Writer
-
-@Throws(IOException::class)
-fun generate(writer: Writer, lines: List<String>) {
-    writer.append(generate(lines).joinToString("\n"))
-}
-
 fun generate(lines: List<String>): List<String> {
     val valuableCustomers = lines
         .toValuableCustomers()

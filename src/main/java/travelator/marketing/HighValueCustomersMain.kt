@@ -1,12 +1,13 @@
 package travelator.marketing
 
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
-
 fun main() {
-    InputStreamReader(System.`in`).use { reader ->
-        OutputStreamWriter(System.out).use { writer ->
-            generate(writer, reader.readLines())
+    System.`in`.reader().use { reader ->
+        System.out.writer().use { writer ->
+            writer.append(
+                generate(
+                    reader.readLines()
+                ).joinToString("\n")
+            )
         }
     }
 }
