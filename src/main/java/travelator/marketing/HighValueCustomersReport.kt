@@ -8,11 +8,10 @@ fun generate(writer: Writer, lines: List<String>) {
     val valuableCustomers = lines
         .toValuableCustomers()
         .sortedBy(CustomerData::score)
-    writer.appendLine("ID\tName\tSpend")
-    for (customerData in valuableCustomers) {
-        writer.appendLine(customerData.outputLine)
-    }
-    writer.append(valuableCustomers.summarised())
+    val resultLines = listOf("ID\tName\tSpend") +
+        valuableCustomers.map(CustomerData::outputLine) +
+        valuableCustomers.summarised()
+    writer.append(resultLines.joinToString("\n"))
 }
 
 private fun List<String>.toValuableCustomers() = withoutHeader()
