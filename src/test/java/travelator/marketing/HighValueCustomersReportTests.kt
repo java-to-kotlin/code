@@ -2,7 +2,6 @@ package travelator.marketing
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.io.StringReader
 import java.io.StringWriter
 
 class HighValueCustomersReportTests {
@@ -26,7 +25,6 @@ class HighValueCustomersReportTests {
         )
     }
 
-
     @Test
     fun emptyTest() {
         check(
@@ -48,13 +46,13 @@ class HighValueCustomersReportTests {
         )
     }
 
+
     private fun check(
         inputLines: List<String>,
         expectedLines: List<String>
     ) {
         val output = StringWriter()
-        val reader = StringReader(inputLines.joinToString("\n"))
-        generate(output, reader.readLines())
+        generate(output, inputLines)
         val outputLines = output.toString().lines()
 
         assertEquals(expectedLines, outputLines)
