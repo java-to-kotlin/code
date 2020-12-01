@@ -6,7 +6,7 @@ import java.io.OutputStreamWriter
 fun main() {
     InputStreamReader(System.`in`).use { reader ->
         OutputStreamWriter(System.out).use { writer ->
-            generate(reader, writer)
+            generate(writer, reader.readLines())
         }
     }
 }

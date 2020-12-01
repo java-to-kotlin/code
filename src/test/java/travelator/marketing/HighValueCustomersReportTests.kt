@@ -54,7 +54,7 @@ class HighValueCustomersReportTests {
     ) {
         val output = StringWriter()
         val reader = StringReader(inputLines.joinToString("\n"))
-        generate(reader, output)
+        generate(output, reader.readLines())
         val outputLines = output.toString().lines()
 
         assertEquals(expectedLines, outputLines)

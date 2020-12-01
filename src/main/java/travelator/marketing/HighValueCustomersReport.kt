@@ -1,13 +1,11 @@
 package travelator.marketing
 
 import java.io.IOException
-import java.io.Reader
 import java.io.Writer
 
 @Throws(IOException::class)
-fun generate(reader: Reader, writer: Writer) {
-    val valuableCustomers = reader
-        .readLines()
+fun generate(writer: Writer, lines: List<String>) {
+    val valuableCustomers = lines
         .toValuableCustomers()
         .sortedBy(CustomerData::score)
     writer.appendLine("ID\tName\tSpend")
