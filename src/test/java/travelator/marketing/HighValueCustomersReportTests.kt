@@ -50,6 +50,9 @@ class HighValueCustomersReportTests {
         inputLines: List<String>,
         expectedLines: List<String>
     ) {
-        assertEquals(expectedLines, generate(inputLines))
+        assertEquals(
+            expectedLines,
+            generate(inputLines).toList()
+        )
     }
 }

@@ -1,12 +1,12 @@
 package travelator.marketing
 
-fun generate(lines: List<String>): List<String> {
+fun generate(lines: List<String>): Sequence<String> {
     val valuableCustomers = lines
         .withoutHeader()
         .map(String::toCustomerData)
         .filter { it.score >= 10 }
         .sortedBy(CustomerData::score)
-    return listOf("ID\tName\tSpend") +
+    return sequenceOf("ID\tName\tSpend") +
         valuableCustomers.map(CustomerData::outputLine) +
         valuableCustomers.summarised()
 }
