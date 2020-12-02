@@ -1,9 +1,7 @@
 package travelator.marketing
 
-fun generate(lines: List<String>): Sequence<String> {
-    val valuableCustomers: List<CustomerData> = lines
-        .asSequence()
-        .constrainOnce()
+fun generate(lines: Sequence<String>): Sequence<String> {
+    val valuableCustomers = lines
         .withoutHeader()
         .map(String::toCustomerData)
         .filter { it.score >= 10 }

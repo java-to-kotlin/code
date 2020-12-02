@@ -52,7 +52,9 @@ class HighValueCustomersReportTests {
     ) {
         assertEquals(
             expectedLines,
-            generate(inputLines).toList()
+            generate(
+                inputLines.asSequence().constrainOnce()
+            ).toList()
         )
     }
 }

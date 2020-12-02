@@ -6,7 +6,9 @@ fun main() {
     System.`in`.reader().use { reader ->
         System.out.writer().use { writer ->
             writer.appendLines(
-                generate(reader.readLines())
+                generate(
+                    reader.readLines().asSequence().constrainOnce()
+                )
             )
         }
     }
