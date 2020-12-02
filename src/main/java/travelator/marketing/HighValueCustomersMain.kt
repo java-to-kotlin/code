@@ -1,14 +1,19 @@
 package travelator.marketing
 
+import java.io.Writer
 
 fun main() {
     System.`in`.reader().use { reader ->
         System.out.writer().use { writer ->
-            generate(
-                reader.readLines()
-            ).forEach { line ->
-                writer.appendLine(line)
-            }
+            writer.appendLines(
+                generate(reader.readLines())
+            )
         }
+    }
+}
+
+fun Writer.appendLines(lines: Sequence<CharSequence>): Writer {
+    return this.also {
+        lines.forEach(this::appendLine)
     }
 }
