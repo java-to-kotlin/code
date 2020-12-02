@@ -1,24 +1,25 @@
 package travelator.marketing
 
 fun generate(lines: List<String>): Sequence<String> {
-    val valuableCustomers: Sequence<CustomerData> = lines
+    val valuableCustomers: List<CustomerData> = lines
         .asSequence()
         .constrainOnce()
         .withoutHeader()
         .map(String::toCustomerData)
         .filter { it.score >= 10 }
         .sortedBy(CustomerData::score)
+        .toList()
     return sequenceOf("ID\tName\tSpend") +
         valuableCustomers.map(CustomerData::outputLine) +
         valuableCustomers.summarised()
 }
 
-private fun Sequence<String>.withoutHeader() = drop(1)
-
-private fun Sequence<CustomerData>.summarised(): String =
+private fun List<CustomerData>.summarised(): String =
     sumByDouble { it.spend }.let { total ->
         "\tTOTAL\t${total.toMoneyString()}"
     }
+
+private fun Sequence<String>.withoutHeader() = drop(1)
 
 internal fun String.toCustomerData(): CustomerData =
     split("\t").let { parts ->
