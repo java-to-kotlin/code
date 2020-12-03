@@ -50,11 +50,10 @@ class HighValueCustomersReportTests {
         inputLines: List<String>,
         expectedLines: List<String>
     ) {
+        val lines = inputLines.asSequence().constrainOnce()
         assertEquals(
             expectedLines,
-            generate(
-                inputLines.asSequence().constrainOnce()
-            ).toList()
+            lines.toHighValueCustomerReport().toList()
         )
     }
 }
