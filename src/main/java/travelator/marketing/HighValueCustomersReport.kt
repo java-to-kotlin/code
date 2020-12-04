@@ -4,7 +4,7 @@ fun Sequence<String>.toHighValueCustomerReport(): Sequence<String> {
     val valuableCustomers = this
         .withoutHeader()
         .map(String::toCustomerData)
-        .filter { it.score >= 10 }
+        .filter { it.score >= 10 } // <1>
         .sortedBy(CustomerData::score)
         .toList()
     return sequenceOf("ID\tName\tSpend") +
@@ -19,15 +19,18 @@ private fun List<CustomerData>.summarised(): String =
 
 private fun Sequence<String>.withoutHeader() = drop(1)
 
-internal fun String.toCustomerData(): CustomerData =
+internal fun String.toCustomerData(): CustomerData? =
     split("\t").let { parts ->
-        CustomerData(
-            id = parts[0],
-            givenName = parts[1],
-            familyName = parts[2],
-            score = parts[3].toInt(),
-            spend = if (parts.size == 4) 0.0 else parts[4].toDouble()
-        )
+        if (parts.size < 4)
+            null
+        else
+            CustomerData(
+                id = parts[0],
+                givenName = parts[1],
+                familyName = parts[2],
+                score = parts[3].toInt(),
+                spend = if (parts.size == 4) 0.0 else parts[4].toDouble()
+            )
     }
 
 private val CustomerData.outputLine: String
