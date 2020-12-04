@@ -1,9 +1,16 @@
 package travelator.marketing
 
-fun Sequence<String>.toHighValueCustomerReport(): Sequence<String> {
+fun Sequence<String>.toHighValueCustomerReport(
+    onErrorLine: (String) -> Unit = {}
+): Sequence<String> {
     val valuableCustomers = this
         .withoutHeader()
-        .map(String::toCustomerData)
+        .map { line ->
+            val customerData = line.toCustomerData()
+            if (customerData == null)
+                onErrorLine(line)
+            customerData
+        }
         .filterNotNull()
         .filter { it.score >= 10 }
         .sortedBy(CustomerData::score)
