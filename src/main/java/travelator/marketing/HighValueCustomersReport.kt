@@ -4,7 +4,8 @@ fun Sequence<String>.toHighValueCustomerReport(): Sequence<String> {
     val valuableCustomers = this
         .withoutHeader()
         .map(String::toCustomerData)
-        .filter { it.score >= 10 } // <1>
+        .filterNotNull()
+        .filter { it.score >= 10 }
         .sortedBy(CustomerData::score)
         .toList()
     return sequenceOf("ID\tName\tSpend") +
