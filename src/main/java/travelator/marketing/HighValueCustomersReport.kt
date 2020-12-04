@@ -23,15 +23,18 @@ private fun Sequence<String>.withoutHeader() = drop(1)
 internal fun String.toCustomerData(): CustomerData? =
     split("\t").let { parts ->
         if (parts.size < 4)
-            null
-        else
-            CustomerData(
-                id = parts[0],
-                givenName = parts[1],
-                familyName = parts[2],
-                score = parts[3].toInt(),
-                spend = if (parts.size == 4) 0.0 else parts[4].toDouble()
-            )
+            return null
+        val score = parts[3].toIntOrNull() ?:
+            return null
+        val spend = if (parts.size == 4) 0.0 else parts[4].toDoubleOrNull() ?:
+            return null
+        CustomerData(
+            id = parts[0],
+            givenName = parts[1],
+            familyName = parts[2],
+            score = score,
+            spend = spend
+        )
     }
 
 private val CustomerData.outputLine: String
