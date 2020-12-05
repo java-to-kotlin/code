@@ -20,6 +20,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind:2.10.0"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.0"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.10.0"
+    implementation "com.natpryce:result4k:2.0.0"
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
     testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.2"

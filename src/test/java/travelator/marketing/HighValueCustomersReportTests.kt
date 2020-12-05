@@ -1,5 +1,6 @@
 package travelator.marketing
 
+import com.natpryce.Success
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -40,7 +41,7 @@ class HighValueCustomersReportTests {
     @Test
     fun emptySpendIs0() {
         assertEquals(
-            CustomerData("1", "Fred", "Flintstone", 0, 0.0),
+            Success(CustomerData("1", "Fred", "Flintstone", 0, 0.0)),
             "1\tFred\tFlintstone\t0".toCustomerData()
         )
     }

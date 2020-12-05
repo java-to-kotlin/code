@@ -1,15 +1,20 @@
 package travelator.marketing
 
+import com.natpryce.Failure
+import com.natpryce.Result
+import com.natpryce.Success
+import com.natpryce.recover
+
 fun Sequence<String>.toHighValueCustomerReport(
     onErrorLine: (String) -> Unit = {}
 ): Sequence<String> {
     val valuableCustomers = this
         .withoutHeader()
         .map { line ->
-            val customerData = line.toCustomerData()
-            if (customerData == null)
+            line.toCustomerData().recover {
                 onErrorLine(line)
-            customerData
+                null
+            }
         }
         .filterNotNull()
         .filter { it.score >= 10 }
@@ -27,22 +32,32 @@ private fun List<CustomerData>.summarised(): String =
 
 private fun Sequence<String>.withoutHeader() = drop(1)
 
-internal fun String.toCustomerData(): CustomerData? =
+internal fun String.toCustomerData(): Result<CustomerData, ParseFailure> =
     split("\t").let { parts ->
         if (parts.size < 4)
-            return null
+            return Failure(NotEnoughFieldsFailure(this))
         val score = parts[3].toIntOrNull() ?:
-            return null
+            return Failure(ScoreIsNotAnIntFailure(this))
         val spend = if (parts.size == 4) 0.0 else parts[4].toDoubleOrNull() ?:
-            return null
-        CustomerData(
-            id = parts[0],
-            givenName = parts[1],
-            familyName = parts[2],
-            score = score,
-            spend = spend
+            return Failure(SpendIsNotADoubleFailure(this))
+        Success(
+            CustomerData(
+                id = parts[0],
+                givenName = parts[1],
+                familyName = parts[2],
+                score = score,
+                spend = spend
+            )
         )
     }
+
+sealed class ParseFailure(open val line: String)
+data class NotEnoughFieldsFailure(override val line: String) :
+    ParseFailure(line)
+data class ScoreIsNotAnIntFailure(override val line: String) :
+    ParseFailure(line)
+data class SpendIsNotADoubleFailure(override val line: String) :
+    ParseFailure(line)
 
 private val CustomerData.outputLine: String
     get() = "$id\t$marketingName\t${spend.toMoneyString()}"
