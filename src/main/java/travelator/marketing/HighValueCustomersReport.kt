@@ -6,13 +6,13 @@ import com.natpryce.Success
 import com.natpryce.recover
 
 fun Sequence<String>.toHighValueCustomerReport(
-    onErrorLine: (String) -> Unit = {}
+    onErrorLine: (ParseFailure) -> Unit = {}
 ): Sequence<String> {
     val valuableCustomers = this
         .withoutHeader()
         .map { line ->
             line.toCustomerData().recover {
-                onErrorLine(line)
+                onErrorLine(it)
                 null
             }
         }
