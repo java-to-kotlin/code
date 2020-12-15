@@ -8,8 +8,5 @@ data class CampSite(
     val countryCode: String
         get() = address.countryCode
 
-    val region: String
-        get() {
-            return address.region
-        }
+    val region: String get() = address.region
 }
