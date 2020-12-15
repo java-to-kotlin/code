@@ -5,6 +5,9 @@ fun Iterable<CampSite>.sitesInRegion(
     region: String
 ): Set<CampSite> =
     filter { site ->
-        site.countryCode == countryISO &&
-            site.region.equals(region, ignoreCase = true)
+        site.isIn(countryISO, region)
     }.toSet()
+
+fun CampSite.isIn(countryISO: String, region: String) =
+    countryCode == countryISO &&
+        this.region.equals(region, ignoreCase = true)
