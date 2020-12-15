@@ -10,6 +10,7 @@ object Shortlists {
         return shortlist.stream().sorted(ordering).collect(Collectors.toUnmodifiableList())
     }
 
+    @JvmStatic
     fun <T> removeItemAt(shortlist: List<T>, index: Int): List<T> {
         return Stream.concat(shortlist.stream().limit(index.toLong()), shortlist.stream().skip((index + 1).toLong()))
             .collect(Collectors.toUnmodifiableList())
