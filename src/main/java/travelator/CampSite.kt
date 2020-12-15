@@ -1,37 +1,15 @@
-package travelator;
+package travelator
 
-public class CampSite {
-    private final String id;
-    private final String name;
-    private final Address address;
+data class CampSite(
+    val id: String,
+    val name: String,
+    val address: Address,
+) {
+    val countryCode: String
+        get() = address.countryCode
 
-    public CampSite(
-        String id,
-        String name,
-        Address address
-    ) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
+    fun region(): String {
+        return address.region
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCountryCode() {
-        return address.getCountryCode();
-    }
-
-    public String region() {
-        return address.getRegion();
-    }
-
-    public Address getAddress() {
-        return address;
-    }
 }
