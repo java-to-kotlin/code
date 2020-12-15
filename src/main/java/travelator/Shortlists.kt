@@ -6,7 +6,7 @@ import java.util.stream.Stream
 
 object Shortlists {
     @JvmStatic
-    fun <T> sorted(shortlist: List<T>, ordering: Comparator<in T>?): List<T> {
+    fun <T> sorted(shortlist: List<T>, ordering: Comparator<in T>): List<T> {
         return shortlist.stream().sorted(ordering).collect(Collectors.toUnmodifiableList())
     }
 
@@ -28,8 +28,8 @@ object Shortlists {
 
 
     @JvmStatic
-    fun <T> byValue(): Comparator<T> where T : HasPrice?, T : HasRating? {
-        return Comparator.comparingDouble { t: T -> t!!.rating / t.price }.reversed()
+    fun <T> byValue(): Comparator<T> where T : HasPrice, T : HasRating {
+        return Comparator.comparingDouble { t: T -> t.rating / t.price }.reversed()
     }
 
     @JvmStatic
