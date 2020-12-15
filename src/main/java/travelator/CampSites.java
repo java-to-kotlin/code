@@ -14,7 +14,7 @@ public class CampSites {
         return sites.stream()
             .filter( campSite ->
                 campSite.getCountryCode().equals(countryISO) &&
-                    campSite.region().equalsIgnoreCase(region)
+                    campSite.getRegion().equalsIgnoreCase(region)
             )
             .collect(toUnmodifiableSet());
     }
