@@ -1,13 +1,7 @@
 package travelator
 
-import travelator.HasRating.rating
-import travelator.HasPrice.price
+import java.util.*
 import java.util.stream.Collectors
-import travelator.HasRating
-import travelator.HasPrice
-import java.util.function.ToDoubleFunction
-import travelator.HasRelevance
-import java.util.Comparator
 import java.util.stream.Stream
 
 object Shortlists {

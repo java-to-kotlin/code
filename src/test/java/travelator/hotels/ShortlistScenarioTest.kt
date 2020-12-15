@@ -1,10 +1,12 @@
-package travelator.hotels
+package travelator
 
 import org.junit.jupiter.api.Test
-import travelator.HasPrice
-import travelator.HasRating
-import travelator.HasRelevance
-import travelator.Shortlists
+import travelator.Shortlists.byPriceLowToHigh
+import travelator.Shortlists.byRating
+import travelator.Shortlists.byRelevance
+import travelator.Shortlists.byValue
+import travelator.Shortlists.removeItemAt
+import travelator.Shortlists.sorted
 
 class ShortlistScenarioTest {
     data class HotelSearchResult(
@@ -38,18 +40,18 @@ class ShortlistScenarioTest {
     @Test
     fun scenario() {
         val hotels = shortlistOf(theGrand, sheridanImperial, artHotel)
-        val hotelByRelevance = Shortlists.sorted(hotels, Shortlists.byRelevance())
+        val hotelByRelevance = sorted(hotels, byRelevance())
         show(hotelByRelevance, "By Relevance")
-        val hotelsByPrice = Shortlists.sorted(hotels, Shortlists.byPriceLowToHigh())
+        val hotelsByPrice = sorted(hotels, byPriceLowToHigh())
         show(hotelsByPrice, "By Price (low to high)")
 
         println("Rejecting: ${hotelsByPrice[0].name}")
-        val desirableHotels = Shortlists.removeItemAt(hotelsByPrice, 0)
+        val desirableHotels = removeItemAt(hotelsByPrice, 0)
         show(desirableHotels, "Remaining shortlist")
 
-        val desirableHotelsByRating = Shortlists.sorted(desirableHotels, Shortlists.byRating())
+        val desirableHotelsByRating = sorted(desirableHotels, byRating())
         show(desirableHotelsByRating, "By rating")
-        val desirableHotelsByValue = Shortlists.sorted(desirableHotels, Shortlists.byValue())
+        val desirableHotelsByValue = sorted(desirableHotels, byValue())
         show(desirableHotelsByValue, "By value")
         println("Chosen: ${desirableHotelsByValue[0].name}")
     }
