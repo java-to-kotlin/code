@@ -1,7 +1,6 @@
 package travelator.tablereader
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class TableReaderTests {
@@ -57,7 +56,6 @@ class TableReaderTests {
         )
     }
 
-    @Disabled
     @Test
     fun `takes headers from header line`() {
         assertEquals(

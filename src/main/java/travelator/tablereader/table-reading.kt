@@ -7,8 +7,9 @@ fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
     )
 }
 
-fun headerProviderFrom(header: String): (Int) -> String {
-    TODO("Not yet implemented")
+private fun headerProviderFrom(header: String): (Int) -> String {
+    val headers = header.splitFields(",")
+    return { index -> headers[index] }
 }
 
 fun readTable(
