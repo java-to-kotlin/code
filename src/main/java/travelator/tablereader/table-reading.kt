@@ -10,7 +10,8 @@ fun readTable(lines: List<String>): List<Map<String, String>> {
 
 private fun parseLine(line: String): Map<String, String> {
     val values = line.splitFields(",")
-    val keys = values.indices.map(Int::toString)
+    val headerProvider: (Int) -> String = Int::toString
+    val keys = values.indices.map(headerProvider)
     return keys.zip(values).toMap()
 }
 
