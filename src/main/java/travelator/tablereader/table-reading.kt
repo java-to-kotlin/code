@@ -1,5 +1,9 @@
 package travelator.tablereader
 
+fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
+    return readTable(lines)
+}
+
 fun readTable(lines: List<String>): List<Map<String, String>> {
     return lines.map(::parseLine)
 }
