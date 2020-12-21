@@ -1,7 +1,14 @@
 package travelator.tablereader
 
 fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
-    return readTable(lines)
+    return readTable(
+        lines.drop(1),
+        headerProviderFrom(lines.first())
+    )
+}
+
+fun headerProviderFrom(header: String): (Int) -> String {
+    TODO("Not yet implemented")
 }
 
 fun readTable(
