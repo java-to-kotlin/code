@@ -6,7 +6,7 @@ fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
 
 fun readTable(
     lines: List<String>,
-    headerProvider: KFunction1<Int, String> = Int::toString // <1>
+    headerProvider: (Int) -> String = Int::toString
 ): List<Map<String, String>> {
     return lines.map { parseLine(it, headerProvider) }
 }
