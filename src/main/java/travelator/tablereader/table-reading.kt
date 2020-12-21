@@ -4,8 +4,11 @@ fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
     return readTable(lines)
 }
 
-fun readTable(lines: List<String>): List<Map<String, String>> {
-    return lines.map { parseLine(it, Int::toString) }
+fun readTable(
+    lines: List<String>,
+    headerProvider: KFunction1<Int, String> = Int::toString // <1>
+): List<Map<String, String>> {
+    return lines.map { parseLine(it, headerProvider) }
 }
 
 private fun parseLine(
