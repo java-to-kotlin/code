@@ -5,7 +5,7 @@ fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
 }
 
 fun readTable(lines: List<String>): List<Map<String, String>> {
-    return lines.map(::parseLine) // <1>
+    return lines.map { parseLine(it, Int::toString) }
 }
 
 private fun parseLine(
