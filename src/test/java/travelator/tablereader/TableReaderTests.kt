@@ -23,4 +23,16 @@ class TableReaderTests {
             ))
         )
     }
+
+    @Test
+    fun `empty line returns empty map`() {
+        assertEquals(
+            listOf(
+                emptyMap<String, String>()
+            ),
+            readTable(listOf(
+                ""
+            ))
+        )
+    }
 }
