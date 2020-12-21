@@ -5,12 +5,14 @@ fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
 }
 
 fun readTable(lines: List<String>): List<Map<String, String>> {
-    return lines.map(::parseLine)
+    return lines.map(::parseLine) // <1>
 }
 
-private fun parseLine(line: String): Map<String, String> {
+private fun parseLine(
+    line: String,
+    headerProvider: (Int) -> String
+): Map<String, String> {
     val values = line.splitFields(",")
-    val headerProvider: (Int) -> String = Int::toString
     val keys = values.indices.map(headerProvider)
     return keys.zip(values).toMap()
 }
