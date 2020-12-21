@@ -35,4 +35,18 @@ class TableReaderTests {
             ))
         )
     }
+
+    @Test
+    fun `two lines of input with default field names`() {
+        assertEquals(
+            listOf(
+                mapOf("0" to "row0field0", "1" to "row0field1"),
+                mapOf("0" to "row1field0", "1" to "row1field1")
+            ),
+            readTable(listOf(
+                "row0field0,row0field1",
+                "row1field0,row1field1"
+            ))
+        )
+    }
 }
