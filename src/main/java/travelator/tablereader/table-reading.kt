@@ -1,22 +1,25 @@
 package travelator.tablereader
 
-fun readTableWithHeader(lines: List<String>): List<Map<String, String>> {
-    return readTable(
-        lines.drop(1),
-        headerProviderFrom(lines.first())
-    )
-}
-
-private fun headerProviderFrom(header: String): (Int) -> String {
-    val headers = header.splitFields(",")
-    return { index -> headers[index] }
-}
+fun readTableWithHeader(
+    lines: List<String>
+): List<Map<String, String>> =
+    when {
+        lines.isEmpty() -> emptyList()
+        else -> readTable(
+            lines.drop(1),
+            headerProviderFrom(lines.first())
+        )
+    }
 
 fun readTable(
     lines: List<String>,
     headerProvider: (Int) -> String = Int::toString
-): List<Map<String, String>> {
-    return lines.map { parseLine(it, headerProvider) }
+): List<Map<String, String>> =
+    lines.map { parseLine(it, headerProvider) }
+
+private fun headerProviderFrom(header: String): (Int) -> String {
+    val headers = header.splitFields(",")
+    return { index -> headers[index] }
 }
 
 private fun parseLine(

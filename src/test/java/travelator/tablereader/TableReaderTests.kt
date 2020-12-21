@@ -70,4 +70,14 @@ class TableReaderTests {
             )
         )
     }
+
+    @Test
+    fun `readTableWithHeader on empty list returns empty list`() {
+        assertEquals(
+            emptyList<String>(),
+            readTableWithHeader(
+                emptyList()
+            )
+        )
+    }
 }
