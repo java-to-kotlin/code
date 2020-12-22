@@ -1,46 +1,26 @@
 package travelator.tablereader
 
 fun readTableWithHeader(
-    lines: List<String>,
-    splitter: (String) -> List<String> = splitOnComma
-): List<Map<String, String>> =
-    readTableWithHeader(
-        lines.asSequence(),
-        splitter
-    ).toList()
-
-fun readTableWithHeader(
     lines: Sequence<String>,
     splitter: (String) -> List<String> = splitOnComma
-) = when {
-    lines.firstOrNull() == null -> emptySequence()
-    else -> {
-        readTable(
+): Sequence<Map<String, String>> =
+    when {
+        lines.firstOrNull() == null -> emptySequence()
+        else -> readTable(
             lines.drop(1),
             headerProviderFrom(lines.first(), splitter),
             splitter
         )
     }
-}
-
-fun readTable(
-    lines: List<String>,
-    headerProvider: (Int) -> String = Int::toString,
-    splitter: (String) -> List<String> = splitOnComma
-): List<Map<String, String>> =
-    readTable(
-        lines.asSequence(),
-        headerProvider,
-        splitter
-    ).toList()
 
 fun readTable(
     lines: Sequence<String>,
     headerProvider: (Int) -> String = Int::toString,
     splitter: (String) -> List<String> = splitOnComma
-) = lines.map {
-    parseLine(it, headerProvider, splitter)
-}
+): Sequence<Map<String, String>> =
+    lines.map {
+        parseLine(it, headerProvider, splitter)
+    }
 
 val splitOnComma: (String) -> List<String> = splitOn(",")
 val splitOnTab: (String) -> List<String> = splitOn("\t")
@@ -62,12 +42,14 @@ private fun headerProviderFrom(
 private fun parseLine(
     line: String,
     headerProvider: (Int) -> String,
-    splitter: (String) -> List<String>,   // <2>
+    splitter: (String) -> List<String>,
 ): Map<String, String> {
     val values = splitter(line)
     val keys = values.indices.map(headerProvider)
     return keys.zip(values).toMap()
 }
 
+// Necessary because String.split returns a list of an empty string
+// when called on an empty string.
 private fun String.splitFields(separators: String): List<String> =
     if (isEmpty()) emptyList() else split(separators)

@@ -12,7 +12,7 @@ class TableReaderAcceptanceTests {
 
     @Test
     fun `acceptance test`() {
-        val input = listOf(
+        val input = sequenceOf(
             "time,x,y",
             "0.0,  1,  1",
             "0.1,1.1,1.2",
@@ -31,7 +31,7 @@ class TableReaderAcceptanceTests {
                     x = record["x"]?.toDoubleOrNull() ?: error("in x"),
                     y = record["y"]?.toDoubleOrNull() ?: error("in y"),
                 )
-            }
+            }.toList()
         )
     }
 }
