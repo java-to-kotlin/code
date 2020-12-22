@@ -6,7 +6,7 @@ fun readTableWithHeader(
 ): List<Map<String, String>> {
     val linesAsSequence = lines.asSequence()
     return when {
-        linesAsSequence.isEmpty() -> emptySequence() // <1>
+        linesAsSequence.firstOrNull() == null -> emptySequence()
         else -> {
             readTable(
                 linesAsSequence.drop(1),
