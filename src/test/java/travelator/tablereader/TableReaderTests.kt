@@ -72,6 +72,23 @@ class TableReaderTests {
     }
 
     @Test
+    fun `can specify header names when there is no header row`() {
+        val headers = listOf("apple", "banana")
+        assertEquals(
+            listOf(
+                mapOf(
+                    "apple" to "field0",
+                    "banana" to "field1",
+                )
+            ),
+            readTable(
+                listOf("field0,field1"),
+                headers::get
+            )
+        )
+    }
+
+    @Test
     fun `readTableWithHeader on empty list returns empty list`() {
         assertEquals(
             emptyList<String>(),

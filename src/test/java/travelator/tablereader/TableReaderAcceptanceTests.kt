@@ -1,7 +1,6 @@
 package travelator.tablereader
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class TableReaderAcceptanceTests {
@@ -11,7 +10,6 @@ class TableReaderAcceptanceTests {
         val y: Double,
     )
 
-    @Disabled
     @Test
     fun `acceptance test`() {
         val input = listOf(
@@ -27,7 +25,7 @@ class TableReaderAcceptanceTests {
         )
         assertEquals(
             expected,
-            readTable(input).map { record ->
+            readTableWithHeader(input).map { record ->
                 Measurement(
                     t = record["time"]?.toDoubleOrNull() ?: error("in time"),
                     x = record["x"]?.toDoubleOrNull() ?: error("in x"),
