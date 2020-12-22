@@ -18,9 +18,12 @@ fun readTable(
     headerProvider: (Int) -> String = Int::toString,
     splitter: (String) -> List<String> = splitOnComma
 ): List<Map<String, String>> =
-    lines.map {
-        parseLine(it, headerProvider, splitter)
-    }
+    lines
+        .asSequence()
+        .map {
+            parseLine(it, headerProvider, splitter)
+        }
+        .toList()
 
 val splitOnComma: (String) -> List<String> = splitOn(",")
 val splitOnTab: (String) -> List<String> = splitOn("\t")
