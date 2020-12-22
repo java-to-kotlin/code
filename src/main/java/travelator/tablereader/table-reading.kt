@@ -7,10 +7,10 @@ fun readTableWithHeader(
     when {
         lines.isEmpty() -> emptyList()
         else -> readTable(
-            lines.drop(1),
+            lines.drop(1).asSequence(),
             headerProviderFrom(lines.first(), splitter),
             splitter
-        )
+        ).toList()
     }
 
 fun readTable(
