@@ -2,9 +2,8 @@ package travelator.tablereader
 
 import org.junit.jupiter.api.Test
 
-class TableReaderTests {
+class TableReaderAcceptanceTests {
     @Test
     fun test() {
-
     }
 }
