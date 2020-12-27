@@ -109,6 +109,25 @@ class TableReaderTests {
     }
 
     @Test
+    fun `readTableWithHeader and missing fields`() {
+        checkReadTableWithHeader(
+            lines = listOf(
+                "H0,H1",
+                "row0field0,",
+                "row1field0",
+                ",",
+                ",row3field1",
+            ),
+            shouldReturn = listOf(
+                mapOf("H0" to "row0field0", "H1" to ""),
+                mapOf("H0" to "row1field0"),
+                mapOf("H0" to "", "H1" to ""),
+                mapOf("H0" to "", "H1" to "row3field1"),
+            ),
+        )
+    }
+
+    @Test
     fun `read from reader`() {
         val fileContents = """
             H0,H1
