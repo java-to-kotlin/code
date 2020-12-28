@@ -109,6 +109,28 @@ class TableReaderTests {
     }
 
     @Test
+    fun `Table contains headers`() {
+        val result: Table = readTableWithHeader(
+            listOf(
+                "H0,H1",
+                "field0,field1"
+            ).asSequence()
+        )
+        assertEquals(
+            listOf("H0", "H1"),
+            result.headers
+        )
+    }
+
+    @Test
+    fun `Table contains empty headers for empty input`() {
+        assertEquals(
+            emptyList<String>(),
+            readTableWithHeader(emptySequence()).headers
+        )
+    }
+
+    @Test
     fun `readTableWithHeader and missing fields`() {
         checkReadTableWithHeader(
             lines = listOf(

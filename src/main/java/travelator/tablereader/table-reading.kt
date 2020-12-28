@@ -2,17 +2,32 @@ package travelator.tablereader
 
 import java.io.StringReader
 
+class Table(
+    val headers: List<String>,
+    val records: Sequence<Map<String, String>>
+) : Sequence<Map<String, String>> by records
+
 fun readTableWithHeader(
     lines: Sequence<String>,
     splitter: (String) -> List<String> = splitOnComma
-): Sequence<Map<String, String>> =
+): Table =
     lines.destruct()?.let { (first, rest) ->
-        readTable(
-            rest,
-            headerProviderFrom(first, splitter),
-            splitter
-        )
-    } ?: emptySequence()
+        tableOf(splitter, first, rest)
+    } ?: Table(emptyList(), emptySequence())
+
+private fun tableOf(
+    splitter: (String) -> List<String>,
+    first: String,
+    rest: Sequence<String>
+): Table {
+    val headers = splitter(first)
+    val sequence = readTable(
+        lines = rest,
+        headerProvider = headers::get,
+        splitter = splitter
+    )
+    return Table(headers, sequence)
+}
 
 fun readTable(
     lines: Sequence<String>,
@@ -36,13 +51,6 @@ fun splitOn(
     line.splitFields(separators)
 }
 
-private fun headerProviderFrom(
-    header: String,
-    splitter: (String) -> List<String>
-): (Int) -> String {
-    val headers = splitter(header)
-    return { index -> headers[index] }
-}
 
 private fun parseLine(
     line: String,
