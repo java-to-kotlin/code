@@ -52,6 +52,27 @@ class CsvExampleTests {
     }
 
     @Test
+    fun `configuration example`() {
+        reader.use { reader ->
+            val measurements = splitOnComma.readTableWithHeader(reader)
+                .map { record ->
+                    Measurement(
+                        t = record["time"]?.toDoubleOrNull()
+                            ?: error("in time"),
+                        x = record["x"]?.toDoubleOrNull()
+                            ?: error("in x"),
+                        y = record["y"]?.toDoubleOrNull()
+                            ?: error("in y"),
+                    )
+                }
+            assertEquals(
+                expected,
+                measurements.toList()
+            )
+        }
+    }
+
+    @Test
     fun `commons csv`() {
         reader.use { reader ->
             val parser = CSVParser.parse(
