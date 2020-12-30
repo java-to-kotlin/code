@@ -29,7 +29,17 @@ class TableReaderAcceptanceTests {
         )
     }
 
-    private fun someFunction(input: List<String>): List<Measurement> {
+    private fun someFunction(input: List<String>): List<Measurement> =
+        readTable(input) // <1>
+            .map { record -> // <2> <3>
+            Measurement(
+                record["time"].toDouble(), // <4>
+                record["x"].toDouble(), // <4>
+                record["y"].toDouble(), // <4>
+            )
+        }
+
+    private fun readTable(input: List<String>): Any {
         TODO("Not yet implemented")
     }
 }
