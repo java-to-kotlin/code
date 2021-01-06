@@ -19,9 +19,8 @@ class MarketingAnalytics(
         )
         val averageNumberOfEventsPerCompletedBooking = bookingEventsByInteractionId
             .values
-            .stream()
-            .mapToInt { it.size }
+            .map { it.size }
             .average()
-        return averageNumberOfEventsPerCompletedBooking.orElse(Double.NaN)
+        return averageNumberOfEventsPerCompletedBooking
     }
 }
