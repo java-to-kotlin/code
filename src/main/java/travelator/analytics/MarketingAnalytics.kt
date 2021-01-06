@@ -8,15 +8,19 @@ class MarketingAnalytics(
     fun averageNumberOfEventsPerCompletedBooking(
         timeRange: String
     ): Double {
-        return allEventsInSameInteractions(timeRange)
+        return allEventsInSameInteractions(
+            eventStore
+                .queryAsSequence("type=CompletedBooking&timerange=$timeRange")
+        )
             .groupBy { event ->
                 event["interactionId"] as String
             }.values
             .averageBy { it.size }
     }
 
-    private fun allEventsInSameInteractions(timeRange: String) = eventStore
-        .queryAsSequence("type=CompletedBooking&timerange=$timeRange")
+    private fun allEventsInSameInteractions(
+        sequence: Sequence<MutableMap<String, Any?>>
+    ) = sequence
         .flatMap { event ->
             val interactionId = event["interactionId"] as String
             eventStore
