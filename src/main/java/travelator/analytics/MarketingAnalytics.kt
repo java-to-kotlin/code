@@ -17,14 +17,9 @@ class MarketingAnalytics(
         val bookingEventsByInteractionId = eventsForSuccessfulBookings.collect(
             groupingBy { event -> event["interactionId"] as String }
         )
-        val values = bookingEventsByInteractionId.values
-        return averageBy<MutableList<MutableMap<String, Any>>>(values) { it.size }
+        return bookingEventsByInteractionId.values.averageBy { it.size }
     }
 }
 
-private fun <T> averageBy(
-    values: Collection<T>,
-    selector: (T) -> Int
-): Double {
-    return values.sumBy(selector) / values.size.toDouble()
-}
+inline fun <T> Collection<T>.averageBy(selector: (T) -> Int): Double =
+    sumBy(selector) / size.toDouble()
