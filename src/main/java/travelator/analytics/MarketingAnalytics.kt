@@ -7,21 +7,18 @@ class MarketingAnalytics(
 ) {
     fun averageNumberOfEventsPerCompletedBooking(
         timeRange: String
-    ): Double {
-        return eventStore
-            .queryAsSequence("type=CompletedBooking&timerange=$timeRange")
-            .allEventsInSameInteractions()
-            .groupBy { event ->
-                event["interactionId"] as String
-            }.values
-            .averageBy { it.size }
-    }
+    ): Double = eventStore
+        .queryAsSequence("type=CompletedBooking&timerange=$timeRange")
+        .allEventsInSameInteractions()
+        .groupBy(Event::interactionId)
+        .values
+        .averageBy { it.size }
 
-    fun Sequence<Map<String, Any?>>.allEventsInSameInteractions() =
+    private fun Sequence<Event>.allEventsInSameInteractions() =
         flatMap { event ->
-            val interactionId = event["interactionId"] as String
-            eventStore
-                .queryAsSequence("interactionId=$interactionId")
+            eventStore.queryAsSequence(
+                "interactionId=${event.interactionId}"
+            )
         }
 }
 
@@ -30,3 +27,8 @@ inline fun <T> Collection<T>.averageBy(selector: (T) -> Int): Double =
 
 fun EventStore.queryAsSequence(query: String) =
     this.queryAsStream(query).asSequence()
+
+typealias Event = Map<String, Any?>
+
+val Event.interactionId: String? get() =
+    this["interactionId"] as? String
