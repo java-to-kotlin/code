@@ -22,7 +22,7 @@ class MarketingAnalytics(
     }
 }
 
-private fun <T : MutableList<MutableMap<String, Any>>> averageBy(
+private fun <T> averageBy(
     values: Collection<T>,
     selector: (T) -> Int
 ): Double {
