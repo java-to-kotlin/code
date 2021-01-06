@@ -10,9 +10,12 @@ class MarketingAnalytics(
     ): Double {
         val eventsForSuccessfulBookings = eventStore
             .queryAsStream("type=CompletedBooking&timerange=$timeRange")
+            .asSequence()
             .flatMap { event ->
                 val interactionId = event["interactionId"] as String
-                eventStore.queryAsStream("interactionId=$interactionId")
+                eventStore
+                    .queryAsStream("interactionId=$interactionId")
+                    .asSequence()
             }
         val bookingEventsByInteractionId = eventsForSuccessfulBookings
             .asSequence()
