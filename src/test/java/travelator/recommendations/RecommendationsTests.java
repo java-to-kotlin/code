@@ -23,8 +23,8 @@ public class RecommendationsTests {
     private final FeaturedDestinations featuredDestinations =
         mock(FeaturedDestinations.class);
     private final Recommendations recommendations = new Recommendations(
-        distanceCalculator,
-        featuredDestinations::findCloseTo
+        featuredDestinations::findCloseTo,
+        distanceCalculator::distanceInMetersBetween
     );
     private final Location paris = location("Paris");
     private final FeaturedDestination louvre = featured("Louvre", "Rue de Rivoli");
@@ -144,8 +144,15 @@ public class RecommendationsTests {
             .thenReturn(result);
     }
 
-    private void givenADistanceBetween(Location location, FeaturedDestination destination, int result) {
-        when(distanceCalculator.distanceInMetersBetween(location, destination.getLocation()))
-            .thenReturn(result);
+    private void givenADistanceBetween(
+        Location location,
+        FeaturedDestination destination,
+        int result
+    ) {
+        when(
+            distanceCalculator.distanceInMetersBetween(
+                location,
+                destination.getLocation())
+        ).thenReturn(result);
     }
 }
