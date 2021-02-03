@@ -1,27 +1,25 @@
 package travelator.recommendations
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
 import travelator.Id
 import travelator.destinations.FeaturedDestination
-import travelator.domain.DistanceCalculator
 import travelator.domain.Location
 
 class RecommendationsTests {
-    private val distanceCalculator = mock(DistanceCalculator::class.java)
 
     private val featuredDestinations =
         mutableMapOf<Location, List<FeaturedDestination>>()
             .withDefault { emptyList() }
+    private val distanceInMetersBetween =
+        mutableMapOf<Pair<Location, Location>, Int>()
+            .withDefault { -1 }
 
     private val recommendations =
         Recommendations(
             featuredDestinations::getValue,
-            distanceCalculator::distanceInMetersBetween
+            { l1, l2 -> distanceInMetersBetween.getValue(l1 to l2) }
         )
-
     private val paris = location("Paris")
     private val louvre = featured("Louvre", "Rue de Rivoli")
     private val eiffelTower = featured("Eiffel Tower", "Champ de Mars")
@@ -32,7 +30,7 @@ class RecommendationsTests {
 
     @Test
     fun returns_no_recommendations_when_no_locations() {
-        Assertions.assertEquals(
+        assertEquals(
             emptyList<Any>(),
             recommendations.recommendationsFor(emptySet())
         )
@@ -40,8 +38,8 @@ class RecommendationsTests {
 
     @Test
     fun returns_no_recommendations_when_no_featured() {
-        givenFeaturedDestinationsFor(paris, emptyList())
-        Assertions.assertEquals(
+        givenFeaturedDestinationsFor(paris)
+        assertEquals(
             emptyList<Any>(),
             recommendations.recommendationsFor(setOf(paris))
         )
@@ -51,14 +49,12 @@ class RecommendationsTests {
     fun returns_recommendations_for_single_location() {
         givenFeaturedDestinationsFor(
             paris,
-            listOf(
-                eiffelTower,
-                louvre
-            )
+            eiffelTower,
+            louvre
         )
-        givenADistanceBetween(paris, eiffelTower, 5000)
-        givenADistanceBetween(paris, louvre, 1000)
-        Assertions.assertEquals(
+        givenADistanceFrom(paris, eiffelTower, 5000)
+        givenADistanceFrom(paris, louvre, 1000)
+        assertEquals(
             listOf(
                 FeaturedDestinationSuggestion(paris, louvre, 1000),
                 FeaturedDestinationSuggestion(paris, eiffelTower, 5000)
@@ -71,23 +67,17 @@ class RecommendationsTests {
     fun returns_recommendations_for_multi_location() {
         givenFeaturedDestinationsFor(
             paris,
-            listOf(
-                eiffelTower,
-                louvre
-            )
+            eiffelTower, louvre
         )
-        givenADistanceBetween(paris, eiffelTower, 5000)
-        givenADistanceBetween(paris, louvre, 1000)
         givenFeaturedDestinationsFor(
             alton,
-            listOf(
-                flowerFarm,
-                watercressLine
-            )
+            flowerFarm, watercressLine
         )
-        givenADistanceBetween(alton, flowerFarm, 5300)
-        givenADistanceBetween(alton, watercressLine, 320)
-        Assertions.assertEquals(
+        givenADistanceFrom(paris, eiffelTower, 5000)
+        givenADistanceFrom(paris, louvre, 1000)
+        givenADistanceFrom(alton, flowerFarm, 5300)
+        givenADistanceFrom(alton, watercressLine, 320)
+        assertEquals(
             listOf(
                 FeaturedDestinationSuggestion(alton, watercressLine, 320),
                 FeaturedDestinationSuggestion(paris, louvre, 1000),
@@ -102,23 +92,17 @@ class RecommendationsTests {
     fun deduplicates_using_smallest_distance() {
         givenFeaturedDestinationsFor(
             alton,
-            listOf(
-                flowerFarm,
-                watercressLine
-            )
+            flowerFarm, watercressLine
         )
-        givenADistanceBetween(alton, flowerFarm, 5300)
-        givenADistanceBetween(alton, watercressLine, 320)
         givenFeaturedDestinationsFor(
             froyle,
-            listOf(
-                flowerFarm,
-                watercressLine
-            )
+            flowerFarm, watercressLine
         )
-        givenADistanceBetween(froyle, flowerFarm, 0)
-        givenADistanceBetween(froyle, watercressLine, 6300)
-        Assertions.assertEquals(
+        givenADistanceFrom(alton, flowerFarm, 5300)
+        givenADistanceFrom(alton, watercressLine, 320)
+        givenADistanceFrom(froyle, flowerFarm, 0)
+        givenADistanceFrom(froyle, watercressLine, 6300)
+        assertEquals(
             listOf(
                 FeaturedDestinationSuggestion(froyle, flowerFarm, 0),
                 FeaturedDestinationSuggestion(alton, watercressLine, 320)
@@ -127,32 +111,27 @@ class RecommendationsTests {
         )
     }
 
-    private fun location(name: String): Location {
-        return Location(Id.of(name), name, name)
-    }
-
-    private fun featured(name: String, locationName: String): FeaturedDestination {
-        return featured(name, location(locationName))
-    }
-
-    private fun featured(name: String, location: Location): FeaturedDestination {
-        return FeaturedDestination(name, location)
-    }
-
     private fun givenFeaturedDestinationsFor(
         location: Location,
-        destinations: List<FeaturedDestination>
+        vararg destinations: FeaturedDestination
     ) {
         featuredDestinations[location] = destinations.toList()
     }
 
-    private fun givenADistanceBetween(
+    private fun givenADistanceFrom(
         location: Location,
         destination: FeaturedDestination,
-        result: Int
+        distanceInMeters: Int
     ) {
-        Mockito.`when`(
-            distanceCalculator.distanceInMetersBetween(location, destination.location)
-        ).thenReturn(result)
-    } 
+        distanceInMetersBetween[location to destination.location] =
+            distanceInMeters
+    }
+
+    private fun location(name: String) = Location(Id.of(name), name, name)
+
+    private fun featured(name: String, locationName: String) =
+        featured(name, location(locationName))
+
+    private fun featured(name: String, location: Location) =
+        FeaturedDestination(name, location)
 }
