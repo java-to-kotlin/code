@@ -6,19 +6,22 @@ import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import travelator.Id
 import travelator.destinations.FeaturedDestination
-import travelator.destinations.FeaturedDestinations
 import travelator.domain.DistanceCalculator
 import travelator.domain.Location
-import java.util.Set
 
 class RecommendationsTests {
     private val distanceCalculator = mock(DistanceCalculator::class.java)
-    private val featuredDestinations = mock(FeaturedDestinations::class.java)
 
-    private val recommendations = Recommendations(
-        featuredDestinations::findCloseTo,
-        distanceCalculator::distanceInMetersBetween
-    )
+    private val featuredDestinations =
+        mutableMapOf<Location, List<FeaturedDestination>>()
+            .withDefault { emptyList() }
+
+    private val recommendations =
+        Recommendations(
+            featuredDestinations::getValue,
+            distanceCalculator::distanceInMetersBetween
+        )
+
     private val paris = location("Paris")
     private val louvre = featured("Louvre", "Rue de Rivoli")
     private val eiffelTower = featured("Eiffel Tower", "Champ de Mars")
@@ -40,7 +43,7 @@ class RecommendationsTests {
         givenFeaturedDestinationsFor(paris, emptyList())
         Assertions.assertEquals(
             emptyList<Any>(),
-            recommendations.recommendationsFor(Set.of(paris))
+            recommendations.recommendationsFor(setOf(paris))
         )
     }
 
@@ -48,7 +51,7 @@ class RecommendationsTests {
     fun returns_recommendations_for_single_location() {
         givenFeaturedDestinationsFor(
             paris,
-            java.util.List.of(
+            listOf(
                 eiffelTower,
                 louvre
             )
@@ -56,11 +59,11 @@ class RecommendationsTests {
         givenADistanceBetween(paris, eiffelTower, 5000)
         givenADistanceBetween(paris, louvre, 1000)
         Assertions.assertEquals(
-            java.util.List.of(
+            listOf(
                 FeaturedDestinationSuggestion(paris, louvre, 1000),
                 FeaturedDestinationSuggestion(paris, eiffelTower, 5000)
             ),
-            recommendations.recommendationsFor(Set.of(paris))
+            recommendations.recommendationsFor(setOf(paris))
         )
     }
 
@@ -68,7 +71,7 @@ class RecommendationsTests {
     fun returns_recommendations_for_multi_location() {
         givenFeaturedDestinationsFor(
             paris,
-            java.util.List.of(
+            listOf(
                 eiffelTower,
                 louvre
             )
@@ -77,7 +80,7 @@ class RecommendationsTests {
         givenADistanceBetween(paris, louvre, 1000)
         givenFeaturedDestinationsFor(
             alton,
-            java.util.List.of(
+            listOf(
                 flowerFarm,
                 watercressLine
             )
@@ -85,13 +88,13 @@ class RecommendationsTests {
         givenADistanceBetween(alton, flowerFarm, 5300)
         givenADistanceBetween(alton, watercressLine, 320)
         Assertions.assertEquals(
-            java.util.List.of(
+            listOf(
                 FeaturedDestinationSuggestion(alton, watercressLine, 320),
                 FeaturedDestinationSuggestion(paris, louvre, 1000),
                 FeaturedDestinationSuggestion(paris, eiffelTower, 5000),
                 FeaturedDestinationSuggestion(alton, flowerFarm, 5300)
             ),
-            recommendations.recommendationsFor(Set.of(paris, alton))
+            recommendations.recommendationsFor(setOf(paris, alton))
         )
     }
 
@@ -99,7 +102,7 @@ class RecommendationsTests {
     fun deduplicates_using_smallest_distance() {
         givenFeaturedDestinationsFor(
             alton,
-            java.util.List.of(
+            listOf(
                 flowerFarm,
                 watercressLine
             )
@@ -108,7 +111,7 @@ class RecommendationsTests {
         givenADistanceBetween(alton, watercressLine, 320)
         givenFeaturedDestinationsFor(
             froyle,
-            java.util.List.of(
+            listOf(
                 flowerFarm,
                 watercressLine
             )
@@ -116,11 +119,11 @@ class RecommendationsTests {
         givenADistanceBetween(froyle, flowerFarm, 0)
         givenADistanceBetween(froyle, watercressLine, 6300)
         Assertions.assertEquals(
-            java.util.List.of(
+            listOf(
                 FeaturedDestinationSuggestion(froyle, flowerFarm, 0),
                 FeaturedDestinationSuggestion(alton, watercressLine, 320)
             ),
-            recommendations.recommendationsFor(Set.of(alton, froyle))
+            recommendations.recommendationsFor(setOf(alton, froyle))
         )
     }
 
@@ -138,10 +141,9 @@ class RecommendationsTests {
 
     private fun givenFeaturedDestinationsFor(
         location: Location,
-        result: List<FeaturedDestination>
+        destinations: List<FeaturedDestination>
     ) {
-        Mockito.`when`(featuredDestinations.findCloseTo(location))
-            .thenReturn(result)
+        featuredDestinations[location] = destinations.toList()
     }
 
     private fun givenADistanceBetween(
