@@ -7,11 +7,11 @@ import travelator.domain.Location
 
 class Recommendations(
     private val featuredDestinations: FeaturedDestinations,
-    private val distanceCalculator: DistanceCalculator
-) {
-    private val destinationFinder: // <1>
+    private val distanceCalculator: DistanceCalculator,
+    private val destinationFinder:
         (Location) -> List<FeaturedDestination> =
         featuredDestinations::findCloseTo
+) {
 
     fun recommendationsFor(
         journey: Set<Location>
