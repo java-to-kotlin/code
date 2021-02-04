@@ -39,7 +39,7 @@ class RecommendationsTests {
 
     @Test
     fun returns_no_recommendations_when_no_featured() {
-        givenFeaturedDestinationsFor(paris)
+        givenFeaturedDestinationsFor(paris, of())
         assertEquals(
             emptyList<Any>(),
             recommendations.recommendationsFor(setOf(paris))
@@ -48,13 +48,11 @@ class RecommendationsTests {
 
     @Test
     fun returns_recommendations_for_single_location() {
-        givenFeaturedDestinationsFor(
-            paris,
-            eiffelTower,
-            louvre
-        )
-        givenADistanceFrom(paris, eiffelTower, 5000)
-        givenADistanceFrom(paris, louvre, 1000)
+        givenFeaturedDestinationsFor(paris, of(eiffelTower, louvre))
+
+        givenADistanceFrom(paris, to = eiffelTower, of = 5000)
+        givenADistanceFrom(paris, to = louvre, of = 1000)
+
         assertEquals(
             listOf(
                 FeaturedDestinationSuggestion(paris, louvre, 1000),
@@ -66,18 +64,14 @@ class RecommendationsTests {
 
     @Test
     fun returns_recommendations_for_multi_location() {
-        givenFeaturedDestinationsFor(
-            paris,
-            eiffelTower, louvre
-        )
-        givenFeaturedDestinationsFor(
-            alton,
-            flowerFarm, watercressLine
-        )
-        givenADistanceFrom(paris, eiffelTower, 5000)
-        givenADistanceFrom(paris, louvre, 1000)
-        givenADistanceFrom(alton, flowerFarm, 5300)
-        givenADistanceFrom(alton, watercressLine, 320)
+        givenFeaturedDestinationsFor(paris, of(eiffelTower, louvre))
+        givenADistanceFrom(paris, to = eiffelTower, of = 5000)
+        givenADistanceFrom(paris, to = louvre, of = 1000)
+
+        givenFeaturedDestinationsFor(alton, of(flowerFarm, watercressLine))
+        givenADistanceFrom(alton, to = flowerFarm, of = 5300)
+        givenADistanceFrom(alton, to = watercressLine, of = 320)
+
         assertEquals(
             listOf(
                 FeaturedDestinationSuggestion(alton, watercressLine, 320),
@@ -91,18 +85,14 @@ class RecommendationsTests {
 
     @Test
     fun deduplicates_using_smallest_distance() {
-        givenFeaturedDestinationsFor(
-            alton,
-            flowerFarm, watercressLine
-        )
-        givenFeaturedDestinationsFor(
-            froyle,
-            flowerFarm, watercressLine
-        )
-        givenADistanceFrom(alton, flowerFarm, 5300)
-        givenADistanceFrom(alton, watercressLine, 320)
-        givenADistanceFrom(froyle, flowerFarm, 0)
-        givenADistanceFrom(froyle, watercressLine, 6300)
+        givenFeaturedDestinationsFor(alton, of(flowerFarm, watercressLine))
+        givenADistanceFrom(alton, to = flowerFarm, of = 5300)
+        givenADistanceFrom(alton, to = watercressLine, of = 320)
+
+        givenFeaturedDestinationsFor(froyle, of(flowerFarm, watercressLine))
+        givenADistanceFrom(froyle, to = flowerFarm, of = 0)
+        givenADistanceFrom(froyle, to = watercressLine, of = 6300)
+
         assertEquals(
             listOf(
                 FeaturedDestinationSuggestion(froyle, flowerFarm, 0),
@@ -114,18 +104,17 @@ class RecommendationsTests {
 
     private fun givenFeaturedDestinationsFor(
         location: Location,
-        vararg destinations: FeaturedDestination
+        of: List<FeaturedDestination>
     ) {
-        featuredDestinations[location] = destinations.toList()
+        featuredDestinations[location] = of
     }
 
     private fun givenADistanceFrom(
-        location: Location,
-        destination: FeaturedDestination,
-        distanceInMeters: Int
+        from: Location,
+        to: FeaturedDestination,
+        of: Int
     ) {
-        distanceInMetersBetween[location to destination.location] =
-            distanceInMeters
+        distanceInMetersBetween[from to to.location] = of
     }
 
     private fun location(name: String) = Location(Id.of(name), name, name)
@@ -136,6 +125,9 @@ class RecommendationsTests {
     private fun featured(name: String, location: Location) =
         FeaturedDestination(name, location)
 }
+
+private fun of(vararg destination: FeaturedDestination)
+    = destination.toList()
 
 private fun <K1, K2, V> Map<Pair<K1, K2>, V>.getValue(k1: K1, k2: K2) =
     getValue(k1 to k2)
