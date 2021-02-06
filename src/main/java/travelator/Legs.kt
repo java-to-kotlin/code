@@ -8,13 +8,13 @@ fun longestLegOver(
 ): Leg? {
     var result: Leg? = null
     for (leg in legs) {
-        if (isLongerThan(leg, duration))
+        if (leg.isLongerThan(duration))
             if (result == null ||
-                isLongerThan(leg, result.plannedDuration))
+                leg.isLongerThan(result.plannedDuration))
                 result = leg
     }
     return result
 }
 
-private fun isLongerThan(leg: Leg, duration: Duration) =
-    leg.plannedDuration.compareTo(duration) > 0
+private fun Leg.isLongerThan(duration: Duration) =
+    plannedDuration.compareTo(duration) > 0
