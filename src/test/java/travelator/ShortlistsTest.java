@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static travelator.Shortlists.*;
-import static travelator.ShortlistsKt.sorted;
+import static travelator.ShortlistsKt.*;
 
 public class ShortlistsTest {
     ExampleItem a = new ExampleItem("A", 4.0f, 500, 0.25);
@@ -30,7 +29,7 @@ public class ShortlistsTest {
 
     @Test
     public void bestValue() {
-        var reordered = sorted(items, Shortlists.byValue());
+        var reordered = sorted(items, byValue());
 
         assertEquals(shortlistOf(c, b, a, d), reordered);
     }
