@@ -17,26 +17,26 @@ public class ShortlistsTest {
 
     @Test
     public void cheapest() {
-        var reordered = sorted(items, byPriceLowToHigh());
+        var reordered = travelator.ShortlistsKt.sorted(items, byPriceLowToHigh());
 
         assertEquals(shortlistOf(b, c, d, a), reordered);
     }
 
     @Test
     public void topRated() {
-        assertEquals(shortlistOf(c, a, d, b), sorted(items, byRating()));
+        assertEquals(shortlistOf(c, a, d, b), travelator.ShortlistsKt.sorted(items, byRating()));
     }
 
     @Test
     public void bestValue() {
-        var reordered = Shortlists.sorted(items, Shortlists.byValue());
+        var reordered = ShortlistsKt.sorted(items, Shortlists.byValue());
 
         assertEquals(shortlistOf(c, b, a, d), reordered);
     }
 
     @Test
     public void mostRelevant() {
-        assertEquals(shortlistOf(d, b, c, a), sorted(items, byRelevance()));
+        assertEquals(shortlistOf(d, b, c, a), travelator.ShortlistsKt.sorted(items, byRelevance()));
     }
 
     private List<ExampleItem> shortlistOf(ExampleItem... items) {
