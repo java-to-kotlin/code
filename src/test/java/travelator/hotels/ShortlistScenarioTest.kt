@@ -6,7 +6,6 @@ import travelator.Shortlists.byRating
 import travelator.Shortlists.byRelevance
 import travelator.Shortlists.byValue
 import travelator.Shortlists.removeItemAt
-import travelator.Shortlists.sorted
 
 class ShortlistScenarioTest {
     data class HotelSearchResult(

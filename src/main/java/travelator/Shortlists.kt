@@ -38,7 +38,6 @@ object Shortlists {
     }
 }
 
-@JvmStatic
 fun <T> sorted(shortlist: List<T>, ordering: Comparator<in T>): List<T> {
     return shortlist.stream().sorted(ordering)
         .collect(toUnmodifiableList())
