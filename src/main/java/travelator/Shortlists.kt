@@ -6,9 +6,8 @@ import java.util.Comparator.comparingDouble
 import java.util.stream.Collectors.toUnmodifiableList
 import java.util.stream.Stream
 
-fun <T> List<T>.sorted(ordering: Comparator<in T>): List<T> {
-    return sortedWith(ordering)
-}
+fun <T> Iterable<T>.sorted(ordering: Comparator<in T>): List<T> = 
+    sortedWith(ordering)
 
 fun <T> removeItemAt(shortlist: List<T>, index: Int): List<T> {
     return Stream.concat(

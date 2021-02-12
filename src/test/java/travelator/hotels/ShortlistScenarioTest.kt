@@ -34,18 +34,18 @@ class ShortlistScenarioTest {
     @Test
     fun scenario() {
         val hotels = shortlistOf(theGrand, sheridanImperial, artHotel)
-        val hotelByRelevance = hotels.sorted(byRelevance())
+        val hotelByRelevance = hotels.sortedWith(byRelevance())
         show(hotelByRelevance, "By Relevance")
-        val hotelsByPrice = hotels.sorted(byPriceLowToHigh())
+        val hotelsByPrice = hotels.sortedWith(byPriceLowToHigh())
         show(hotelsByPrice, "By Price (low to high)")
 
         println("Rejecting: ${hotelsByPrice[0].name}")
         val desirableHotels = removeItemAt(hotelsByPrice, 0)
         show(desirableHotels, "Remaining shortlist")
 
-        val desirableHotelsByRating = desirableHotels.sorted(byRating())
+        val desirableHotelsByRating = desirableHotels.sortedWith(byRating())
         show(desirableHotelsByRating, "By rating")
-        val desirableHotelsByValue = desirableHotels.sorted(byValue())
+        val desirableHotelsByValue = desirableHotels.sortedWith(byValue())
         show(desirableHotelsByValue, "By value")
         println("Chosen: ${desirableHotelsByValue[0].name}")
     }
