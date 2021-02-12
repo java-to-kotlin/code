@@ -7,8 +7,7 @@ import java.util.stream.Collectors.toUnmodifiableList
 import java.util.stream.Stream
 
 fun <T> sorted(shortlist: List<T>, ordering: Comparator<in T>): List<T> {
-    return shortlist.stream().sorted(ordering)
-        .collect(toUnmodifiableList())
+    return shortlist.sortedWith(ordering)
 }
 
 fun <T> removeItemAt(shortlist: List<T>, index: Int): List<T> {
@@ -25,7 +24,6 @@ fun byRating(): Comparator<HasRating> {
 fun byPriceLowToHigh(): Comparator<HasPrice> {
     return comparing(HasPrice::price)
 }
-
 
 fun <T> byValue(): Comparator<T> where T : HasPrice, T : HasRating {
     return comparingDouble { t: T -> t.rating / t.price }.reversed()
