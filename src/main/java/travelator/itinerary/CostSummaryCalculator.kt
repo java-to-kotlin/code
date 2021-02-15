@@ -11,9 +11,17 @@ class CostSummaryCalculator(
     private val currencyTotals = mutableMapOf<Currency, Money>()
 
     fun summarise(costs: Iterable<Money>): CostSummary {
-        val delegate = CostSummaryCalculator(userCurrency, exchangeRates)
-        costs.forEach(delegate::addCost)
-        return delegate.summarise()
+        val currencyTotals = mutableMapOf<Currency, Money>()
+        costs.forEach {
+            currencyTotals.merge(it.currency, it, Money::plus)
+        }
+        val lines = currencyTotals.values
+            .sortedBy { it.currency.currencyCode }
+            .map { exchangeRates.convert(it, userCurrency) }
+        val total = lines
+            .map { it.toMoney }
+            .fold(Money(0, userCurrency), Money::add)
+        return CostSummary(lines, total)
     }
 
     fun addCost(cost: Money) {
