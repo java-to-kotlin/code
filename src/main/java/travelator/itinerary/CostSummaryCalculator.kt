@@ -18,9 +18,10 @@ class CostSummaryCalculator(
         val totals = currencyTotals.values.sortedBy {
             it.currency.currencyCode
         }
-        val summary = CostSummary(userCurrency)
-        for (total in totals) {
-            summary.addLine(exchangeRates.convert(total, userCurrency))
+        val summary = CostSummary(userCurrency).apply {
+            for (total in totals) {
+                addLine(exchangeRates.convert(total, userCurrency))
+            }
         }
         return summary
     }
