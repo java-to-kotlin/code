@@ -7,29 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
-    private final List<Journey> journeys; // <1>
+    private final List<Journey> journeys;
 
     public Route(List<Journey> journeys) {
-        this.journeys = journeys; // <2>
+        this.journeys = journeys;
     }
 
-    public int size() { // <3>
+    public int size() {
         return journeys.size();
     }
 
-    public Journey get(int index) { // <3>
+    public Journey get(int index) {
         return journeys.get(index);
     }
 
-    public Location getDepartsFrom() { // <4>
+    public Location getDepartsFrom() {
         return get(0).getDepartsFrom();
     }
 
-    public Location getArrivesAt() { // <4>
+    public Location getArrivesAt() {
         return get(size() - 1).getArrivesAt();
     }
 
-    public Duration getDuration() { // <4>
+    public Duration getDuration() {
         return Duration.between(
             get(0).getDepartureTime(),
             get(size() - 1).getArrivalTime());
