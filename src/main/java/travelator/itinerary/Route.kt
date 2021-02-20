@@ -5,7 +5,7 @@ import java.time.Duration
 import java.util.*
 
 class Route(
-    private val journeys: List<Journey>
+    val journeys: List<Journey>
 ) {
     fun size(): Int = journeys.size
 
@@ -20,11 +20,12 @@ class Route(
             get(size() - 1).arrivalTime
         )
 
-    fun withJourneyAt(index: Int, replacedBy: Journey): Route {
-        val newJourneys = ArrayList(journeys)
-        newJourneys[index] = replacedBy
-        return Route(newJourneys)
-    }
+}
+
+fun Route.withJourneyAt(index: Int, replacedBy: Journey): Route {
+    val newJourneys = ArrayList(journeys)
+    newJourneys[index] = replacedBy
+    return Route(newJourneys)
 }
 
 val Route.departsFrom: Location
