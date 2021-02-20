@@ -24,8 +24,10 @@ val Route.duration: Duration
         get(size - 1).arrivalTime
     )
 
-fun Route.withJourneyAt(index: Int, replacedBy: Journey): Route {
-    val newJourneys = ArrayList(journeys)
-    newJourneys[index] = replacedBy
-    return Route(newJourneys)
-}
+fun Route.withJourneyAt(index: Int, replacedBy: Journey): Route =
+    Route(journeys.withItemAt(index, replacedBy))
+
+fun <T> Iterable<T>.withItemAt(index: Int, replacedBy: T): List<T> =
+    this.toMutableList().apply {
+        this[index] = replacedBy
+    }
