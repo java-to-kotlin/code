@@ -16,20 +16,19 @@ public class UI {
 
 
     public void render(List<Journey> route) {
-        for (int i = 0; i < RouteKt.getSize(route); i++) {
-            var journey = RouteKt.get(route, i);
+        for (int i = 0; i < route.size(); i++) {
+            var journey = route.get(i);
             render(journey);
         }
     }
 
     public void renderWithHeader(List<Journey> route) {
         renderHeader(
-            RouteKt.getDepartsFrom(route), // <1>
+            RouteKt.getDepartsFrom(route),
             RouteKt.getArrivesAt(route),
             RouteKt.getDuration(route)
         );
-        for (int i = 0; i < RouteKt.getSize(route); i++) {
-            var journey = RouteKt.get(route, i);
+        for (var journey : route) {
             render(journey);
         }
     }

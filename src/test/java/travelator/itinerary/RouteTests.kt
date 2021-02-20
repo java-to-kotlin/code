@@ -27,13 +27,12 @@ class RouteTests {
         val journey1 = Journey(waterloo, alton, someTime(), someTime(), RAIL)
         val journey2 = Journey(alton, alresford, someTime(), someTime(), CAMEL)
         val journey3 = Journey(alresford, winchester, someTime(), someTime(), BUS)
-        val route = listOf(journey1, journey2, journey3) // <1>
-
         val replacement = Journey(alton, alresford, someTime(), someTime(), RAIL)
 
+        val route = listOf(journey1, journey2, journey3)
         assertEquals(
             listOf(journey1, replacement, journey3),
-            route.withJourneyAt(1, replacement) // <2>
+            route.withItemAt(1, replacement)
         )
     }
 }
