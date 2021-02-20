@@ -2,11 +2,10 @@ package travelator.itinerary
 
 import travelator.Location
 import java.time.Duration
-import java.util.*
 
 class Route(
     val journeys: List<Journey>
-)
+) : List<Journey> by journeys
 
 val Route.size: Int
     get() = journeys.size
