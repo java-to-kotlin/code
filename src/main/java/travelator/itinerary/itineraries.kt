@@ -9,4 +9,9 @@ fun Route.withoutJourneysBy(travelMethod: TravelMethod) =
     this.filterNot { it.method == travelMethod }
 
 fun Itinerary.withoutJourneysBy(travelMethod: TravelMethod) =
-    copy(route = filterNot { it.method == travelMethod } )
+    withTransformedRoute {
+        filterNot { it.method == travelMethod }
+    }
+
+fun Itinerary.withoutLastJourney() =
+    withTransformedRoute { dropLast(1) }

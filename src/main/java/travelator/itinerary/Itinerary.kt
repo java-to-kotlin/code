@@ -8,6 +8,9 @@ data class Itinerary(
     val route: Route
 ) : Route by route {
 
+    fun withTransformedRoute(transform: (Route).() -> Route) =
+        copy(route = transform(route))
+
 }
 
 fun Route.hasJourneyLongerThan(duration: Duration) =
