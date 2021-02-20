@@ -1,43 +1,31 @@
-package travelator.itinerary;
+package travelator.itinerary
 
-import travelator.Location;
+import travelator.Location
+import java.time.Duration
+import java.util.*
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+class Route(
+    private val journeys: List<Journey>
+) {
+    fun size(): Int = journeys.size
 
-public class Route {
-    private final List<Journey> journeys;
+    operator fun get(index: Int) = journeys[index]
 
-    public Route(List<Journey> journeys) {
-        this.journeys = journeys;
-    }
+    val departsFrom: Location
+        get() = get(0).departsFrom
 
-    public int size() {
-        return journeys.size();
-    }
+    val arrivesAt: Location
+        get() = get(size() - 1).arrivesAt
 
-    public Journey get(int index) {
-        return journeys.get(index);
-    }
+    val duration: Duration
+        get() = Duration.between(
+            get(0).departureTime,
+            get(size() - 1).arrivalTime
+        )
 
-    public Location getDepartsFrom() {
-        return get(0).getDepartsFrom();
-    }
-
-    public Location getArrivesAt() {
-        return get(size() - 1).getArrivesAt();
-    }
-
-    public Duration getDuration() {
-        return Duration.between(
-            get(0).getDepartureTime(),
-            get(size() - 1).getArrivalTime());
-    }
-
-    public Route withJourneyAt(int index, Journey replacedBy) {
-        var newJourneys = new ArrayList<>(this.journeys);
-        newJourneys.set(index, replacedBy);
-        return new Route(newJourneys);
+    fun withJourneyAt(index: Int, replacedBy: Journey): Route {
+        val newJourneys = ArrayList(journeys)
+        newJourneys[index] = replacedBy
+        return Route(newJourneys)
     }
 }
