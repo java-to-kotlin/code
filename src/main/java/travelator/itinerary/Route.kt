@@ -3,9 +3,11 @@ package travelator.itinerary
 import travelator.Location
 import java.time.Duration
 
-class Route(
-    val journeys: List<Journey>
-) : List<Journey> by journeys
+typealias Route = List<Journey>
+
+fun Route(journeys: List<Journey>) = journeys
+
+val Route.journeys get() = this
 
 val Route.size: Int
     get() = journeys.size
