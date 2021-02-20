@@ -6,9 +6,9 @@ import java.time.Duration
 class Itinerary(
     val id: Id<Itinerary>,
     val route: Route
-) {
+) : Route by route { // <1>
 
     fun hasJourneyLongerThan(duration: Duration) =
-        route.any { it.duration > duration }
+        any { it.duration > duration }
 
 }
