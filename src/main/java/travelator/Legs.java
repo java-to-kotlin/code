@@ -11,15 +11,9 @@ public class Legs {
         List<Leg> legs,
         Duration duration
     ) {
-        var longestLeg = legs.stream()
-            .max(Comparator.comparing(Leg::getPlannedDuration));
-        if (longestLeg.isEmpty()) {
-            return Optional.empty();
-        } else if (isLongerThan(longestLeg.get(), duration)) {
-            return longestLeg;
-        } else {
-            return Optional.empty();
-        }
+        return legs.stream()
+            .max(Comparator.comparing(Leg::getPlannedDuration))
+            .filter(leg -> isLongerThan(leg, duration));
     }
 
     private static boolean isLongerThan(Leg leg, Duration duration) {
