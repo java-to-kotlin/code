@@ -73,21 +73,29 @@ public class RecommendationsTests {
 
     @Test
     public void returns_recommendations_for_multi_location() {
-        givenFeaturedDestinationsFor(paris,
-            List.of(
+        when(featuredDestinations.findCloseTo(paris))
+            .thenReturn(List.of(
                 eiffelTower,
                 louvre
             ));
-        givenADistanceBetween(paris, eiffelTower, 5000);
-        givenADistanceBetween(paris, louvre, 1000);
+        when(distanceCalculator.distanceInMetersBetween(
+            paris, eiffelTower.getLocation())
+        ).thenReturn(5000);
+        when(distanceCalculator.distanceInMetersBetween(
+            paris, louvre.getLocation())
+        ).thenReturn(1000);
 
-        givenFeaturedDestinationsFor(alton,
-            List.of(
+        when(featuredDestinations.findCloseTo(alton))
+            .thenReturn(List.of(
                 flowerFarm,
                 watercressLine
             ));
-        givenADistanceBetween(alton, flowerFarm, 5300);
-        givenADistanceBetween(alton, watercressLine, 320);
+        when(distanceCalculator.distanceInMetersBetween(
+            alton, flowerFarm.getLocation())
+        ).thenReturn(5300);
+        when(distanceCalculator.distanceInMetersBetween(
+            alton, watercressLine.getLocation())
+        ).thenReturn(320);
 
         assertEquals(
             List.of(
