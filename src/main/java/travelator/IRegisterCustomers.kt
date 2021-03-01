@@ -12,6 +12,6 @@ sealed class RegistrationProblem
 
 object Excluded : RegistrationProblem()
 
-data class Duplicate(
-    val message: String
-) : RegistrationProblem()
+data class Duplicate(val message: String) : RegistrationProblem()
+
+data class DatabaseProblem(val message: String) : RegistrationProblem()

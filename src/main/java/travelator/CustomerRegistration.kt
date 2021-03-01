@@ -16,8 +16,13 @@ class CustomerRegistration(
         return when {
             exclusionList.exclude(data) -> Failure(Excluded)
             else -> customers.add(data.name, data.email)
-                .mapFailure { duplicate: DuplicateCustomerProblem ->
-                    Duplicate(duplicate.message)
+                .mapFailure { problem: CustomersProblem ->
+                    when (problem) {
+                        is DuplicateCustomerProblem ->
+                            Duplicate(problem.message)
+                        is DatabaseCustomerProblem ->
+                            DatabaseProblem(problem.message)
+                    }
                 }
         }
     }

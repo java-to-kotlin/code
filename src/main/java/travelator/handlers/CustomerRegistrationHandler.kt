@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.forkhandles.result4k.map
 import dev.forkhandles.result4k.recover
-import travelator.Duplicate
-import travelator.Excluded
-import travelator.IRegisterCustomers
-import travelator.RegistrationProblem
+import travelator.*
 import travelator.http.Request
 import travelator.http.Response
 import java.net.HttpURLConnection.*
@@ -41,4 +38,5 @@ class CustomerRegistrationHandler(
 private fun RegistrationProblem.toResponse() = when (this) {
     is Duplicate -> Response(HTTP_CONFLICT)
     is Excluded -> Response(HTTP_FORBIDDEN)
+    is DatabaseProblem -> Response(HTTP_INTERNAL_ERROR) // <1>
 }

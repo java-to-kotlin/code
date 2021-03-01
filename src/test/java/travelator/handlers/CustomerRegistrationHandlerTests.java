@@ -3,10 +3,7 @@ package travelator.handlers;
 import dev.forkhandles.result4k.Failure;
 import dev.forkhandles.result4k.Success;
 import org.junit.jupiter.api.Test;
-import travelator.Customer;
-import travelator.Duplicate;
-import travelator.Excluded;
-import travelator.IRegisterCustomers;
+import travelator.*;
 import travelator.http.Request;
 import travelator.http.Response;
 
@@ -69,6 +66,20 @@ public class CustomerRegistrationHandlerTests {
 
         assertEquals(
             new Response(HTTP_FORBIDDEN),
+            handler.handle(new Request(fredBody))
+        );
+    }
+
+    @Test
+    public void returns_InternalError_for_database() {
+
+        when(registration.register(fredData))
+            .thenReturn(new Failure<>(
+                new DatabaseProblem("deliberate")
+            ));
+
+        assertEquals(
+            new Response(HTTP_INTERNAL_ERROR),
             handler.handle(new Request(fredBody))
         );
     }
