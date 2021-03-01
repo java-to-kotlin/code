@@ -1,9 +1,11 @@
 package travelator.handlers;
 
+import dev.forkhandles.result4k.Failure;
+import dev.forkhandles.result4k.Success;
 import org.junit.jupiter.api.Test;
 import travelator.Customer;
-import travelator.DuplicateException;
-import travelator.ExcludedException;
+import travelator.Duplicate;
+import travelator.Excluded;
 import travelator.IRegisterCustomers;
 import travelator.http.Request;
 import travelator.http.Response;
@@ -27,12 +29,12 @@ public class CustomerRegistrationHandlerTests {
         new RegistrationData("fred", "fred@bedrock.com");
 
     @Test
-    public void returns_Created_with_body_on_success()
-        throws DuplicateException, ExcludedException {
-        when(registration.register(fredData))
-            .thenReturn(
+    public void returns_Created_with_body_on_success() {
+
+        when(registration.registerToo(fredData))
+            .thenReturn(new Success<>(
                 new Customer("0", fredData.name, fredData.email)
-            );
+            ));
 
         String expectedBody = toJson(
             "{'id':'0','name':'fred','email':'fred@bedrock.com'}"
@@ -44,13 +46,12 @@ public class CustomerRegistrationHandlerTests {
     }
 
     @Test
-    public void returns_Conflict_for_duplicate()
-        throws DuplicateException, ExcludedException {
+    public void returns_Conflict_for_duplicate() {
 
-        when(registration.register(fredData))
-            .thenThrow(
-                new DuplicateException("deliberate")
-            );
+        when(registration.registerToo(fredData))
+            .thenReturn(new Failure<>(
+                new Duplicate("deliberate")
+            ));
 
         assertEquals(
             new Response(HTTP_CONFLICT),
@@ -59,13 +60,12 @@ public class CustomerRegistrationHandlerTests {
     }
 
     @Test
-    public void returns_Forbidden_for_excluded()
-        throws DuplicateException, ExcludedException {
+    public void returns_Forbidden_for_excluded() {
 
-        when(registration.register(fredData))
-            .thenThrow(
-                new ExcludedException()
-            );
+        when(registration.registerToo(fredData))
+            .thenReturn(new Failure<>(
+                Excluded.INSTANCE
+            ));
 
         assertEquals(
             new Response(HTTP_FORBIDDEN),
@@ -82,10 +82,9 @@ public class CustomerRegistrationHandlerTests {
     }
 
     @Test
-    public void returns_InternalError_for_other_exceptions()
-        throws DuplicateException, ExcludedException {
+    public void returns_InternalError_for_other_exceptions() {
 
-        when(registration.register(fredData))
+        when(registration.registerToo(fredData))
             .thenThrow(
                 new RuntimeException("deliberate")
             );
@@ -95,7 +94,6 @@ public class CustomerRegistrationHandlerTests {
             handler.handle(new Request(fredBody))
         );
     }
-
 
     private String toJson(String jsonIsh) {
         return jsonIsh.replace('\'', '"');
