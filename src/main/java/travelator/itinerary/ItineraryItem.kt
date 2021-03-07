@@ -8,12 +8,14 @@ import java.time.Duration
 import java.time.Period
 import java.time.ZonedDateTime
 
-sealed class ItineraryItem { // <1>
-    abstract val id: Id<ItineraryItem> // <2>
+sealed class ItineraryItem {
+    abstract val id: Id<ItineraryItem>
     abstract val description: String
-    abstract val costs: List<Money>
-    abstract val mapOverlay: MapOverlay
+    abstract val costs: List<Money> // <1>
 }
+
+val ItineraryItem.mapOverlay: MapOverlay // <2>
+    get() = TODO("Not yet implemented")
 
 data class Accommodation(
     override val id: Id<Accommodation>,
@@ -21,17 +23,15 @@ data class Accommodation(
     val checkInFrom: ZonedDateTime,
     val checkOutBefore: ZonedDateTime,
     val pricePerNight: Money
-) : ItineraryItem() { // <3>
+) : ItineraryItem() {
     val nights = Period.between(checkInFrom.toLocalDate(), checkOutBefore.toLocalDate()).days
     val totalPrice: Money = pricePerNight * nights
 
     override val description
         get() = "$nights nights at ${location.userReadableName}"
-
     override val costs
         get() = listOf(totalPrice)
-
-    override val mapOverlay
+    override val mapOverlay // <3>
         get() = PointOverlay(
             id = id,
             position = location.position,
@@ -41,20 +41,19 @@ data class Accommodation(
 
 }
 
-
 data class Attraction(
     override val id: Id<Attraction>,
     val location: Location,
     val notes: String
 ) : ItineraryItem() {
-    override val description
-        get() = location.userReadableName
+    override val description get() =
+        location.userReadableName
 
-    override val costs
-        get() = emptyList<Money>()
+    override val costs get() =
+        emptyList<Money>()
 
-    override val mapOverlay
-        get() = PointOverlay(
+    override val mapOverlay get() =
+        PointOverlay(
             position = location.position,
             text = description,
             icon = StandardIcons.ATTRACTION,
@@ -98,14 +97,12 @@ data class RestaurantBooking(
     val location: Location,
     val time: ZonedDateTime
 ) : ItineraryItem() {
-    override val description
-        get() = location.userReadableName
+    override val description get() = location.userReadableName
 
-    override val costs
-        get() = emptyList<Money>()
+    override val costs get() = emptyList<Money>()
 
-    override val mapOverlay
-        get() = PointOverlay(
+    override val mapOverlay get() =
+        PointOverlay(
             id = id,
             position = location.position,
             text = location.userReadableName,
