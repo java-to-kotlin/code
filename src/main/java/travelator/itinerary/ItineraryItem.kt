@@ -8,11 +8,11 @@ import java.time.Duration
 import java.time.Period
 import java.time.ZonedDateTime
 
-interface ItineraryItem {
-    val id: Id<ItineraryItem>
-    val description: String
-    val costs: List<Money>
-    val mapOverlay: MapOverlay
+sealed class ItineraryItem { // <1>
+    abstract val id: Id<ItineraryItem> // <2>
+    abstract val description: String
+    abstract val costs: List<Money>
+    abstract val mapOverlay: MapOverlay
 }
 
 data class Accommodation(
@@ -21,8 +21,11 @@ data class Accommodation(
     val checkInFrom: ZonedDateTime,
     val checkOutBefore: ZonedDateTime,
     val pricePerNight: Money
-) : ItineraryItem {
-    val nights = Period.between(checkInFrom.toLocalDate(), checkOutBefore.toLocalDate()).days
+) : ItineraryItem() { // <3>
+    val nights = Period.between(
+        checkInFrom.toLocalDate(),
+        checkOutBefore.toLocalDate()
+    ).days
     val totalPrice: Money = pricePerNight * nights
 
     override val description
@@ -39,24 +42,28 @@ data class Accommodation(
 
 }
 
+
 data class Attraction(
     override val id: Id<Attraction>,
     val location: Location,
     val notes: String
-) : ItineraryItem {
-    override val description get() =
-        location.userReadableName
+) : ItineraryItem() {
+    override val description
+        get() =
+            location.userReadableName
 
-    override val costs get() =
-        emptyList<Money>()
+    override val costs
+        get() =
+            emptyList<Money>()
 
-    override val mapOverlay get() =
-        PointOverlay(
-            position = location.position,
-            text = description,
-            icon = StandardIcons.ATTRACTION,
-            id = id
-        )
+    override val mapOverlay
+        get() =
+            PointOverlay(
+                position = location.position,
+                text = description,
+                icon = StandardIcons.ATTRACTION,
+                id = id
+            )
 
 }
 
@@ -69,7 +76,7 @@ data class Journey(
     val arrivalTime: ZonedDateTime,
     val price: Money,
     val path: List<Position> = listOf(departsFrom.position, arrivesAt.position),
-) : ItineraryItem {
+) : ItineraryItem() {
     override val description
         get() = "${departsFrom.userReadableName} " +
             "to ${arrivesAt.userReadableName} " +
@@ -94,16 +101,17 @@ data class RestaurantBooking(
     override val id: Id<RestaurantBooking>,
     val location: Location,
     val time: ZonedDateTime
-) : ItineraryItem {
+) : ItineraryItem() {
     override val description get() = location.userReadableName
 
     override val costs get() = emptyList<Money>()
 
-    override val mapOverlay get() =
-        PointOverlay(
-            id = id,
-            position = location.position,
-            text = location.userReadableName,
-            icon = StandardIcons.RESTAURANT
-        )
+    override val mapOverlay
+        get() =
+            PointOverlay(
+                id = id,
+                position = location.position,
+                text = location.userReadableName,
+                icon = StandardIcons.RESTAURANT
+            )
 }
