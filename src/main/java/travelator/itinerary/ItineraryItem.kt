@@ -11,11 +11,15 @@ import java.time.ZonedDateTime
 sealed class ItineraryItem {
     abstract val id: Id<ItineraryItem>
     abstract val description: String
-    abstract val costs: List<Money> // <1>
+    abstract val costs: List<Money>
 }
 
-val ItineraryItem.mapOverlay: MapOverlay // <2>
-    get() = TODO("Not yet implemented")
+val ItineraryItem.mapOverlay: MapOverlay get() = when (this) {
+    is Accommodation -> mapOverlay
+    is Attraction -> mapOverlay
+    is Journey -> mapOverlay
+    is RestaurantBooking -> mapOverlay
+}
 
 data class Accommodation(
     override val id: Id<Accommodation>,
@@ -34,7 +38,7 @@ data class Accommodation(
         get() = "$nights nights at ${location.userReadableName}"
     override val costs
         get() = listOf(totalPrice)
-    override val mapOverlay // <3>
+    val mapOverlay
         get() = PointOverlay(
             id = id,
             position = location.position,
@@ -55,7 +59,7 @@ data class Attraction(
     override val costs get() =
         emptyList<Money>()
 
-    override val mapOverlay get() =
+    val mapOverlay get() =
         PointOverlay(
             position = location.position,
             text = description,
@@ -83,7 +87,7 @@ data class Journey(
     override val costs
         get() = listOf(price)
 
-    override val mapOverlay
+    val mapOverlay
         get() = OverlayGroup(
             id = id,
             elements = listOf(
@@ -104,7 +108,7 @@ data class RestaurantBooking(
 
     override val costs get() = emptyList<Money>()
 
-    override val mapOverlay get() =
+    val mapOverlay get() =
         PointOverlay(
             id = id,
             position = location.position,
