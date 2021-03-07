@@ -14,12 +14,6 @@ sealed class ItineraryItem {
     abstract val costs: List<Money>
 }
 
-val ItineraryItem.mapOverlay: MapOverlay get() = when (this) {
-    is Accommodation -> mapOverlay
-    is Attraction -> mapOverlay
-    is Journey -> mapOverlay
-    is RestaurantBooking -> mapOverlay
-}
 
 data class Accommodation(
     override val id: Id<Accommodation>,
@@ -35,15 +29,8 @@ data class Accommodation(
         get() = "$nights nights at ${location.userReadableName}"
     override val costs
         get() = listOf(totalPrice)
-}
 
-val Accommodation.mapOverlay
-    get() = PointOverlay(
-        id = id,
-        position = location.position,
-        text = location.userReadableName,
-        icon = StandardIcons.HOTEL
-    )
+}
 
 data class Attraction(
     override val id: Id<Attraction>,
@@ -57,14 +44,6 @@ data class Attraction(
         emptyList<Money>()
 
 }
-
-val Attraction.mapOverlay get() =
-    PointOverlay(
-        position = location.position,
-        text = description,
-        icon = StandardIcons.ATTRACTION,
-        id = id
-    )
 
 data class Journey(
     override val id: Id<Journey>,
@@ -86,16 +65,6 @@ data class Journey(
 
 }
 
-val Journey.mapOverlay
-    get() = OverlayGroup(
-        id = id,
-        elements = listOf(
-            PathOverlay(path, travelMethod.userReadableName),
-            PointOverlay(departsFrom.position, departsFrom.userReadableName, StandardIcons.START),
-            PointOverlay(arrivesAt.position, arrivesAt.userReadableName, StandardIcons.END)
-        )
-    )
-
 data class RestaurantBooking(
     override val id: Id<RestaurantBooking>,
     val location: Location,
@@ -105,11 +74,3 @@ data class RestaurantBooking(
 
     override val costs get() = emptyList<Money>()
 }
-
-val RestaurantBooking.mapOverlay get() =
-    PointOverlay(
-        id = id,
-        position = location.position,
-        text = location.userReadableName,
-        icon = StandardIcons.RESTAURANT
-    )

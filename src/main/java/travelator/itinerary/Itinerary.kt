@@ -2,6 +2,7 @@ package travelator.itinerary
 
 import travelator.Id
 import travelator.geo.OverlayGroup
+import travelator.geo.mapOverlay
 
 data class Itinerary(
     val id: Id<Itinerary>,
