@@ -30,8 +30,10 @@ data class Accommodation(
 
     override val description
         get() = "$nights nights at ${location.userReadableName}"
+
     override val costs
         get() = listOf(totalPrice)
+
     override val mapOverlay
         get() = PointOverlay(
             id = id,
@@ -49,21 +51,18 @@ data class Attraction(
     val notes: String
 ) : ItineraryItem() {
     override val description
-        get() =
-            location.userReadableName
+        get() = location.userReadableName
 
     override val costs
-        get() =
-            emptyList<Money>()
+        get() = emptyList<Money>()
 
     override val mapOverlay
-        get() =
-            PointOverlay(
-                position = location.position,
-                text = description,
-                icon = StandardIcons.ATTRACTION,
-                id = id
-            )
+        get() = PointOverlay(
+            position = location.position,
+            text = description,
+            icon = StandardIcons.ATTRACTION,
+            id = id
+        )
 
 }
 
@@ -102,16 +101,17 @@ data class RestaurantBooking(
     val location: Location,
     val time: ZonedDateTime
 ) : ItineraryItem() {
-    override val description get() = location.userReadableName
+    override val description
+        get() = location.userReadableName
 
-    override val costs get() = emptyList<Money>()
+    override val costs
+        get() = emptyList<Money>()
 
     override val mapOverlay
-        get() =
-            PointOverlay(
-                id = id,
-                position = location.position,
-                text = location.userReadableName,
-                icon = StandardIcons.RESTAURANT
-            )
+        get() = PointOverlay(
+            id = id,
+            position = location.position,
+            text = location.userReadableName,
+            icon = StandardIcons.RESTAURANT
+        )
 }
