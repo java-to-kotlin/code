@@ -8,7 +8,8 @@ fun readTableWithHeader(
         lines.isEmpty() -> emptyList()
         else -> readTable(
             lines.drop(1),
-            headerProviderFrom(lines.first(), splitter)
+            headerProviderFrom(lines.first(), splitter),
+            splitter // <1>
         )
     }
 
