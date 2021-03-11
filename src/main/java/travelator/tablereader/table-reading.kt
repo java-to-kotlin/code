@@ -7,7 +7,9 @@ fun readTableWithHeader(
         lines.isEmpty() -> emptyList()
         else -> readTable(
             lines.drop(1),
-            headerProviderFrom(lines.first())
+            headerProviderFrom(lines.first()) { header -> // <1>
+                header.splitFields(",")
+            }
         )
     }
 
@@ -24,8 +26,11 @@ val splitOnComma: (String) -> List<String> = { line ->
     line.splitFields(",")
 }
 
-private fun headerProviderFrom(header: String): (Int) -> String {
-    val headers = header.splitFields(",")
+private fun headerProviderFrom(
+    header: String,
+    splitter: (String) -> List<String> // <2>
+): (Int) -> String {
+    val headers = splitter(header)
     return { index -> headers[index] }
 }
 
