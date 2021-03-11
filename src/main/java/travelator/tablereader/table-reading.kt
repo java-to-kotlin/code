@@ -16,11 +16,12 @@ fun readTable(
     headerProvider: (Int) -> String = Int::toString
 ): List<Map<String, String>> =
     lines.map {
-        val splitOnComma: (String) -> List<String> = { line ->
-            line.splitFields(",")
-        }
         parseLine(it, headerProvider, splitOnComma)
     }
+
+val splitOnComma: (String) -> List<String> = { line ->
+    line.splitFields(",")
+}
 
 private fun headerProviderFrom(header: String): (Int) -> String {
     val headers = header.splitFields(",")
