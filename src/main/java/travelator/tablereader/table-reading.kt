@@ -9,7 +9,7 @@ fun readTableWithHeader(
         else -> readTable(
             lines.drop(1),
             headerProviderFrom(lines.first(), splitter),
-            splitter // <1>
+            splitter
         )
     }
 
@@ -22,14 +22,14 @@ fun readTable(
         parseLine(it, headerProvider, splitter)
     }
 
-fun splitOn(
-    separators: String
-): (String) -> List<String> = { line: String ->
-    line.splitFields(separators)
-}
-
 val splitOnComma: (String) -> List<String> = splitOn(",")
 val splitOnTab: (String) -> List<String> = splitOn("\t")
+
+fun splitOn(
+    separators: String
+) = { line: String ->
+    line.splitFields(separators)
+}
 
 private fun headerProviderFrom(
     header: String,
@@ -42,7 +42,7 @@ private fun headerProviderFrom(
 private fun parseLine(
     line: String,
     headerProvider: (Int) -> String,
-    splitter: (String) -> List<String>,
+    splitter: (String) -> List<String>,   // <2>
 ): Map<String, String> {
     val values = splitter(line)
     val keys = values.indices.map(headerProvider)
