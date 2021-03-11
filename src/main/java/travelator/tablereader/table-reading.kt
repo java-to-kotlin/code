@@ -16,9 +16,10 @@ fun readTable(
     headerProvider: (Int) -> String = Int::toString
 ): List<Map<String, String>> =
     lines.map {
-        parseLine(it, headerProvider) { line -> // <1>
+        val splitOnComma: (String) -> List<String> = { line ->
             line.splitFields(",")
         }
+        parseLine(it, headerProvider, splitOnComma)
     }
 
 private fun headerProviderFrom(header: String): (Int) -> String {
@@ -29,7 +30,7 @@ private fun headerProviderFrom(header: String): (Int) -> String {
 private fun parseLine(
     line: String,
     headerProvider: (Int) -> String,
-    splitter: (String) -> List<String>, // <2>
+    splitter: (String) -> List<String>,
 ): Map<String, String> {
     val values = splitter(line)
     val keys = values.indices.map(headerProvider)
