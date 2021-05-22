@@ -11,5 +11,4 @@ data class Itinerary(
 
     fun costs(): List<Money> = route.costs() + accommodations.costs()
 }
-
 fun Iterable<Accommodation>.costs(): List<Money> = flatMap { it.costs() }
