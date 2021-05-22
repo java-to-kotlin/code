@@ -38,15 +38,15 @@ data class Accommodation(
         get() = "$nights nights at ${location.userReadableName}"
     override val costs
         get() = listOf(totalPrice)
-    val mapOverlay
-        get() = PointOverlay(
-            id = id,
-            position = location.position,
-            text = location.userReadableName,
-            icon = StandardIcons.HOTEL
-        )
-
 }
+
+val Accommodation.mapOverlay
+    get() = PointOverlay(
+        id = id,
+        position = location.position,
+        text = location.userReadableName,
+        icon = StandardIcons.HOTEL
+    )
 
 data class Attraction(
     override val id: Id<Attraction>,
@@ -59,15 +59,15 @@ data class Attraction(
     override val costs get() =
         emptyList<Money>()
 
-    val mapOverlay get() =
-        PointOverlay(
-            position = location.position,
-            text = description,
-            icon = StandardIcons.ATTRACTION,
-            id = id
-        )
-
 }
+
+val Attraction.mapOverlay get() =
+    PointOverlay(
+        position = location.position,
+        text = description,
+        icon = StandardIcons.ATTRACTION,
+        id = id
+    )
 
 data class Journey(
     override val id: Id<Journey>,
@@ -87,17 +87,17 @@ data class Journey(
     override val costs
         get() = listOf(price)
 
-    val mapOverlay
-        get() = OverlayGroup(
-            id = id,
-            elements = listOf(
-                PathOverlay(path, travelMethod.userReadableName),
-                PointOverlay(departsFrom.position, departsFrom.userReadableName, StandardIcons.START),
-                PointOverlay(arrivesAt.position, arrivesAt.userReadableName, StandardIcons.END)
-            )
-        )
-
 }
+
+val Journey.mapOverlay
+    get() = OverlayGroup(
+        id = id,
+        elements = listOf(
+            PathOverlay(path, travelMethod.userReadableName),
+            PointOverlay(departsFrom.position, departsFrom.userReadableName, StandardIcons.START),
+            PointOverlay(arrivesAt.position, arrivesAt.userReadableName, StandardIcons.END)
+        )
+    )
 
 data class RestaurantBooking(
     override val id: Id<RestaurantBooking>,
@@ -107,12 +107,12 @@ data class RestaurantBooking(
     override val description get() = location.userReadableName
 
     override val costs get() = emptyList<Money>()
-
-    val mapOverlay get() =
-        PointOverlay(
-            id = id,
-            position = location.position,
-            text = location.userReadableName,
-            icon = StandardIcons.RESTAURANT
-        )
 }
+
+val RestaurantBooking.mapOverlay get() =
+    PointOverlay(
+        id = id,
+        position = location.position,
+        text = location.userReadableName,
+        icon = StandardIcons.RESTAURANT
+    )
