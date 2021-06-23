@@ -14,7 +14,6 @@ repositories {
     mavenLocal()
 }
 
-
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
@@ -35,7 +34,6 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
         freeCompilerArgs = ["-Xjvm-default=all"]
     }
 }
-
 
 println("building with Kotlin $KOTLIN_VERSION")
 
